@@ -40,6 +40,21 @@
       <li>
         <%
           path = bf.util.site_path_helper(
+                         "about", trailing_slash=True)
+        %>
+        <a href="${path}" class="${nav_class(path)}">About</a>
+      </li>
+      <li>
+        <%
+          path = bf.util.site_path_helper(
+                        "contact", trailing_slash=True)
+        %>
+        <a href="${path}" class="${nav_class(path)}">Contact</a>
+      </li>
+
+      <li>
+        <%
+          path = bf.util.site_path_helper(
                      bf.config.blog.path, "archive", trailing_slash=True)
         %>
         <a href="${path}" class="${nav_class(path)}">Archives</a>
