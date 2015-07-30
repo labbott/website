@@ -54,7 +54,7 @@ blog.template_path = "_templates/blog"
 blog.description = "A website/blog by labbott"
 
 ## blog_timezone -- the timezone that you normally write your blog posts from
-blog.timezone = "US/Eastern"
+blog.timezone = "US/Pacific"
 
 ## blog_googleanaltics_id -- enable Google Analytics tracking
 ## TODO: move to plugin/filter?
