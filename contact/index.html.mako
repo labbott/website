@@ -5,6 +5,7 @@
 * E-mail: my firstname @ labbott.name
 * Freenode IRC: labbott
 * Linkedin: [Laura Abbott](https://www.linkedin.com/in/laabbott)
+* twitter: [openlabbott](http://www.twitter.com/openlabbott)
 * Github: [labbott](http://www.github.com/labbott) (I don't do much through github)
 
 </%self:filter>
