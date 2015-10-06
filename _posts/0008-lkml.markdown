@@ -30,6 +30,9 @@ technical feedback without tearing people down. Positive experiences
 will never erase history or any future bad behavior that may occur though.
 I believe the kernel community is moving in the right direction though
 and I hope to continue working in it to make it better.
+(Edit 10/6: I would be remiss if I didn't link to
+[this](http://sarah.thesharps.us/2015/10/05/closing-a-door/) blog post
+talking about leaving because of LKML culture)
 
 More common than a flame is for messages to be ignored. From personal
 experience this is even more frustrating than a "No you're wrong".
@@ -60,7 +63,8 @@ get a response. At the very least, find an appropriate subsystem
 mailing list and maintainer to send a question to. To get an idea on
 where to start, the kernel provides a script called `get_maintainer.pl`.
 This takes a patch file as input or a file name with the `-f` flag and
-will spit out mailing list and maintainer info
+will spit out mailing list and maintainer info. LKML will always be
+on there.
 
 - *Sending to the wrong people* - get_maintainer is great but it sometimes
 spits out information that's hard to make sense of. Example with e-mails
@@ -77,6 +81,8 @@ redacted for spam purposes:
 		Sasha Levin <sasha.levin@XXX> (removed_lines:169/1243=14%)
 		linux-mm@kvack.org (open list:MEMORY MANAGEMENT)
 		linux-kernel@vger.kernel.org (open list)
+
+	Here we have a list of people and linux-mm (subsystem mailing list) and LKML.
 
 	Are all these people maintainers? No, get_maintainer tries to be clever and find
 	other people who have last touched the file. Unless it says MAINTAINER or SUPPORTER
@@ -137,7 +143,7 @@ redacted for spam purposes:
 	If I'm sending to subsystem for the first time, my e-mail list usually includes
 
 	1. All people listed as actual maintainers from get_maintainer.pl
-	2. All mailing lists (LKML is always included, you should always make sure it gets CCed)
+	2. All mailing lists from get_maintainer.pl (LKML is always included, you should always make sure it gets CCed)
 	3. If I only have a subsystem maintainer and not a driver maintainer, I look
 	for up to 3 people who have contributed more than one patch or have been active on the
 	mailing list.
