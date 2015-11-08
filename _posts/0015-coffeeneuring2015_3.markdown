@@ -1,0 +1,50 @@
+---
+date: 2015/11/08 16:00:00
+title: Coffee Neuring 2015 number 3
+categories: bike, cofeeneuring2015
+---
+(This is a writeup for [Coffeeneuring 2015](http://chasingmailboxes.com/2015/09/19/coffeeneuring-challenge-2015-a-dream-within-a-dream/). It started out in a
+google doc and is now moving here. The entries contain the actual date of
+the adventure. The writeup is 1. where I went 2. the date 3. what I drank
+4. More detailed ride story 5. total mileage)
+
+[Tweet](https://twitter.com/openlabbott/status/655794619465101312)
+
+1. [Row House Cafe](http://rowhousecafe.com/) (I thought about trying to do an
+all starbucks challenge because Seattle but I like this place too much)
+2. October 18th
+3. Small Mocha and brownie cookie thing with frosting in the middle. Waaaaay
+too much sugar but so delicious
+4. Some highs and lows.
+	- Highs: Started out by biking straight towards downtown via 1st/3rd
+	ave. This was a really nice ride down, the sidewalks weren’t too bad
+	and I even rode in the street some. I think I’m getting more confident
+	about riding in the street. Padded bike shorts helped a lot although I
+	was still sore going out (I think taking most of this week and next
+	week off might help). (most) of South Lake Union is really nice for
+	biking minus some of the notes below. I biked all the way up the
+	protected bike lane going under Aurora. Would have been better if I had
+	more speed going into it I think. My path going home of cutting through
+	Seattle Center is definitely a good one because it evens out some of
+	the hills and the Seattle center is fun. I’m pleased I chose to bike
+	back home instead of taking the bus back from Denny Way. I also saw
+	another biker walking her bike some which made me feel better.
+	- Lows: Denny Way is complete shite for biking. I’m not confident
+	enough to bike in the street there yet and the sidewalks are garbage.
+	That’s how I feel about most of downtown right now. The streets are
+	also pretty unpaven in some places. I got turned around and found
+	myself wanting to bike the wrong way down a street. I need to look at
+	maps and plan out a better route. Got frustrated with the
+	start/stop/getting lost and walked my bike quite a bit. SLU is
+	alternately “Wow this is A+ biking” and “Where did this construction
+	come from”. I also wish Westlake didn’t have street car tracks going in
+	the right lane (might try the left).  I fell down while trying to bike
+	under construction BS. Never doing that again. Why doesn’t the row
+	house cafe have bike racks!
+	- Goals for next time
+		- Practice doing hand signals.
+		- I need to find somewhere I can practice taking my hands off
+		my bike.
+		- Research some routes.
+		- Drink water/eat something before starting out.
+	5. 3.5 total with probably .5-1 mile of walking bike

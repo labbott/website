@@ -1,0 +1,36 @@
+---
+date: 2015/11/08 16:00:00
+title: Coffee Neuring 2015 number 7
+categories: bike, cofeeneuring2015
+---
+(This is a writeup for [Coffeeneuring 2015](http://chasingmailboxes.com/2015/09/19/coffeeneuring-challenge-2015-a-dream-within-a-dream/). It started out in a
+google doc and is now moving here. The entries contain the actual date of
+the adventure. The writeup is 1. where I went 2. the date 3. what I drank
+4. More detailed ride story 5. total mileage)
+
+[Tweet](https://twitter.com/openlabbott/status/663419323982065668)
+
+1. [Zeitgeist Coffee](http://zeitgeistcoffee.com/) near Century Link field
+2. November 8th
+3. Latte and Almond Croissant. A+ for both.
+4. It was actually not raining when I started out! I headed down Queen Anne Ave
+which has a bike lane. Gave up on the bike lane because a) It was all cracked
+b) covered in leaves c) Not wide enough. Biked over on Denny Way to 2nd Ave.
+Denny Way on the street is much better than Denny Way on the sidewalk. My route
+was basically straight down 2nd ave. It’s apparently taken me multiple rides
+to figure out there is an ever so slight incline in Belltown between Denny Way
+and Stewart Street. It’s not much but if you aren’t used to biking like I am it
+is noticeable. Solution: bike more. 2nd ave has a nice protected bike lane for
+almost all the way. This is great except for the part which is closed and
+covered for construction. After an incident in SLU, I refuse to bike under
+those things anymore. Zeitgeist has a bike rack right outside. Nice and empty.
+Pioneer square and international district are now on my “come back here and
+bike” TODO list. After coffee, I decided to experiment with taking Link transit
+back to Westlake. I knew it could be done theoretically but practicing and
+seeing how it works during low volume times are good. I couldn’t actually lift
+my bike up to get it on the hooks so I just kept it on the ground. It turns out
+taking the light rail was a good choice: it started downpouring right as I got
+on the train. It was still down pouring when I got off and I got soaked enough
+yesterday so I just took the bus back instead of experimenting with coming back through SLU. Great way to finish off the challenge.
+5. ~3 miles
+
