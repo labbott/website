@@ -1,0 +1,56 @@
+---
+date: 2016/02/16 16:00:00
+title: Do Outreachy with the Fedora kernel team!
+categories: fedora
+---
+Compared to my other kernel teammates, I'm a relative newcomer to how the
+kernel is
+packaged and prepared. They've been amazing at helping me understand how the
+Fedora kernel comes together. Much of the packaging scripts and tools for the
+kernel have grown organically and some of the knowledge is a bit tribal. I've
+tried to do my part by updating the
+[kernel wiki](https://fedoraproject.org/wiki/Kernel). Even so, there's many
+parts of the kernel package which could use improvement.
+
+This is where Outreachy comes in.
+[We're looking for an Outreachy intern](https://fedoraproject.org/wiki/Outreachy/2016)
+to help improve the scripts and tooling surrounding the kernel in Fedora. This
+isn't working on the kernel directly. [The Linux kernel has its own Outreachy
+project](http://kernelnewbies.org/OutreachyIntro) for those who are interested
+in kernel development. This internship is designed to help support the Fedora
+kernel to make the lives of both the maintainers  and the
+community better. What kind of work might this involve?
+
+- Writing scripts to make regular kernel maintenance tasks easier
+- Writing scripts for Fedora users to use with the kernel
+- Verifying that the kernel.spec build options actually work and fixing or
+removing those that don't
+- Updating old scripts and parts of makefiles (e.g. parts that still reference
+cvs)
+- Changing how kernel subpackages (kernel-core, kernel-devel etc.) are created
+- Tweaking parts of the Fedora kernel build process
+- Your own ideas to help improve the process!
+
+This internship will have many smaller projects and tasks instead of just one
+big task like some internships.
+
+What kind of technical skills will this internship involve?
+
+- Basic programming skills
+- Working with the command line
+- git
+- Shell scripting
+- RPM spec files
+- Maybe python or perl
+- Makefiles
+- Building kernels
+
+You don't have to come in as an expert on all these skills. This internship is
+for learning.
+
+Interested? First, make sure you meet the [eligibility](https://wiki.gnome.org/Outreachy#Eligibility)
+requirements. Please double check the requirements about being a full-time
+student as this has caused confusion in the past. If you meet those
+requirements, there is a [wiki page](https://fedoraproject.org/wiki/Outreachy/Kernel_application_2016)
+talking about how to get started with application tasks Feel free to e-mail me
+with any questions at my @fedoraproject.org address or catch me on IRC in PST.
