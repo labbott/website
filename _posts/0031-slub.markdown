@@ -1,0 +1,53 @@
+---
+date: 2016/04/12 16:00:00
+title: Some SLUB internals
+categories: fedora, kernel
+---
+The SLUB debug path performance is improved with the patches I submitted. There
+is still a nagging issue with the current debug path though. This is an
+explanation/braindump of what I've been looking at.
+
+Christoph Lameter gave a very good [talk](http://events.linuxfoundation.org/sites/events/files/slides/slaballocators.pdf)
+at Linux Con Europe a few years ago about the SLAB/SLOB/SLUB allocators. The
+main paths in the SLUB allocator are the fast and slow path. The fast path is
+designed to take no locks if possible. It manages this through the use of
+per-cpu freelists and [cmpxchg\_double](https://en.wikipedia.org/wiki/Double_compare-and-swap).
+If a per-cpu free list has an object available, it does a cmpxchg\_double
+against the object and a transaction ID. If the cmpxchg succeeds, the
+allocation is successful. (The transaction ID is designed to protect against
+preemption/migration. I'm handwaving over lots of details here to avoid this
+becoming a post on lock free data structures. Maybe another time.) Because the
+fast path needs to be as fast as possible, all the debug checks happen on the
+slow path. This means that when debugging is enabled, all allocations will be
+forced to the slow path.
+
+On the slow path, after really checking there are no per-cpu objects available,
+a new page (either partially allocated or brand new) is selected to be the
+new per-cpu page. For non-debug paths, this means that the next allocation
+should be set up for success on the fast path. When SLUB debugging is enabled
+though, the allocation must go through the slow path. Right now, every
+allocation calls [deactivate\_slab](http://lxr.free-electrons.com/ident?i=deactivate_slab)
+to get rid of the per-cpu list. deactivate\_slab works by calling cmpxchg on
+every object available in the per-cpu page to take it off the list. Calling
+cmpxchg on every object is the only way to ensure consistency but it's slow.
+It's really slow for debugging when it has to happen for every
+allocation. ftrace profiling shows that deactivate\_slab can take 25-40% of the
+time for allocation when just poisoning is enabled. It's not the debugging
+itself that is slow (poisoning memory), but a side-effect of enabling debugging.
+
+I proposed a patch to avoid the need to deactivate the slab when debugging
+was enabled; instead of assuming that the page was going to be use for per-cpu
+usage, set it up as if it had been deactivated already. One of the SLUB
+maintainers pointed out that the ultimate goal is to use poisoning in
+production. The benchmark I chose showed improvement but the slow path still
+involves taking a lock to look for partial slabs. This will eventually lead to
+lock contention and slow down on larger systems/workloads. He suggested trying
+to make partial cpu slabs work for debugging, splitting the difference between
+full per-CPU enablement.
+
+So that's where I'm at right now, trying to make partial CPU slabs be available
+for allocation while still forcing allocations to the slow path. I've been
+pondering alternative approaches as well: sanitization really only needs
+poisoning on the free path, not allocation. Maybe allocations could come from
+the fast path but frees could be forced to the slow path? Not an easy thing
+to do without impacting the fast path. More thinking for me to do.
