@@ -1,0 +1,74 @@
+---
+date: 2016/07/08 11:00:00
+title: A rawhide debugging story
+categories: fedora, rawhide
+---
+Usually by this time in the kernel cycle, most of the major kernel work is done
+and rawhide 'just works'. I was grumpy to see that today's rawhide build
+failed:
+
+	scripts/recordmcount.c: In function 'do_file':
+	scripts/recordmcount.c:466:28: error: 'R_METAG_ADDR32' undeclared
+	(first use in this function)
+	  case EM_METAG:  reltype = R_METAG_ADDR32;
+	                            ^~~~~~~~~~~~~~
+	scripts/recordmcount.c:466:28: note: each undeclared identifier is
+	reported only once for each function it appears in
+	scripts/recordmcount.c:468:20: error: 'R_METAG_NONE' undeclared
+	(first use in this function)
+	     rel_type_nop = R_METAG_NONE;
+	                    ^~~~~~~~~~~~
+
+I expected this to be some last minute change that snuck in but there were no
+changes that came in which would affect this. So what gives?
+
+This is at the top of scripts/recordmcount.c
+
+	#ifndef EM_METAG
+	/* Remove this when these make it to the standard system elf.h. */
+	#define EM_METAG      174
+	#define R_METAG_ADDR32                   2
+	#define R_METAG_NONE                     3
+	#endif
+
+The way this is setup, if `EM_METAG` is defined that means the relocation
+symbols should be defined as well, if not recordmcount.c includes the
+defintion. Looking at the #defines and preprocessed output would be really
+helpful here. Generally the kernel makes it easy to do this. You can
+do
+
+	$ make path/to/file/name.i
+	$ make mm/page_alloc.i
+
+and `file_name.i` will contain the preprocessed output. This file was a little
+bit different so it wasn't being picked up as expected. It was easier to run
+a modified version of the command. `V=1` on the make command shows the commands
+that are being run which gave the command
+
+	gcc -Wp,-MD,scripts/.recordmcount.d -Wall -Wmissing-prototypes
+	-Wstrict-prototypes -O2 -fomit-frame-pointer -std=gnu89
+	-I./tools/include  -o scripts/recordmcount scripts/recordmcount.c
+
+This also gave me the hint that no other unusual include paths were being added
+(another cause of "why is this #defined"). Adding `-E` to that command will
+stop at preprocessing and `-dM` will dump all the #defines. Run this, and yup
+
+	#define EM_METAG 174
+
+There it is without any of the relocation symbols defined. So what's defining
+this? There aren't any many header files in recordmcount.c but a good candidate
+is `<elf.h>` which is a system header file. The expanded preprocessor output
+shows it as `/usr/include/elf.h`. A call to `dnf provides /usr/include/elf.h`
+says that glibc-headers provides this file.
+
+glibc did get an [update](http://pkgs.fedoraproject.org/cgit/rpms/glibc.git/commit/?id=9a78be1808600ca5e66eab741542447a29cfbeb3)
+recently which included a new glibc snapshot. Looking at the commit log for
+glibc, yes, there was a [commit](https://sourceware.org/git/?p=glibc.git;a=commit;h=94e73c95d9b5ac7d3b3f178e2ca03ef6b60e82aa)
+which added the `EM_METAG` macro but did not add the #defines for relocation
+symbols. The workaround/fix is pretty simple: give each relocation symbol its
+own #ifdef check until the rest of the relocation symbols actually get added.
+
+Once again, the kernel is not an island. It depends on other packages. This
+represents why rawhide exists. We run at the bleeding edge so we can find
+these bugs before anything ever goes stable. Hopefully this will be the last
+actual work for this rawhide release.
