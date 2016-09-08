@@ -1,0 +1,90 @@
+---
+date: 2016/09/08 11:00:00
+title: Success with interns
+categories: fedora
+---
+Outreachy ended last month. Given this was the first time the
+kernel team has tried to do this, I think it went well. I've been reflecting
+on what makes an internship successful based on this past summer and other
+experiences.
+
+- Mentorship takes time. It needs to be accounted for when agreeing to mentor.
+Life happens and you can't predict your time perfectly but if you have doubts
+about your ability or willingness to commit, err on the side of not mentoring.
+"rock-paper-scissors you get the intern" or "surprise you are mentoring[^1]" are
+very bad ways to start off a mentoring experience.
+
+- Mentorship is a skill. I don't always get it right but I work on getting
+better every time. I ask for help with mentoring skills the same way I would
+ask for help with a technical question.
+
+- An internship is about learning. Work should be getting done but part of
+the outcome of an internship is skills for the intern. Don't tie intern
+deliverables to crucial deadlines.
+
+- When I mentor an intern, I consider it one of my most important tasks. An
+intern is going to have exactly one chance at this experience. I think of
+this as a temporary management role in that it's my job to enable them to be
+successful and make the most of the experience [^2].
+
+- Have a plan set up. Set goals and outcomes and have a schedule of when
+things will be completed. The schedule may change, but you should have one
+in mind.
+
+- Learn to give clear feedback and evaluate progress. There is no formula for
+this (I've asked!) but you need to have some way to judge whether adequate
+progress is being made and if not, what is causing issues. Both mentor and
+mentee should be on the same page about how much progress is being made.
+
+- Set up regular meetings at the beginning of the internship to check in and
+see how things are going. Schedule more than you think you need until you are
+sure things are going well. It's much better to cancel meetings you don't need
+than not realize something is going wrong. Ask your mentee how they think
+things are going and if they want to meet more/less.
+
+- Know what it takes to be successful for the project. Programs like Outreachy
+give a lot of leeway in projects. This means you need to be specific about
+what kind of skills are needed. Set your application tasks to be able to gauge
+if applicants can complete the tasks successfully. Know that aiming a project
+at a 1st/2nd year student will take different mentoring skills from a project
+for an almost new grad.
+
+- Communicate why the project is important and how the work is going to be used
+after the internship is over. Everyone wants to know that the work they are
+doing is valuable in some way.
+
+- Choose your tasks carefully. Tasks with a specific goal but multiple ways to
+solve are best. Too open ended tasks can be frustrating for all involved but
+there should be some chance for decision making. Just giving a list of tasks
+and exactly how they should be completed isn't good for learning. Give your
+intern a chance to propose a solution and then review it together.
+
+- Speaking of review, code review is a skill. Model how to respond to code
+review comments. Encourage interns to practice reviewing others code and
+ask questions as well.
+
+- Problem solving should be a discussion. Ask what they are stuck on and how
+they think they should try and solve it. Don't just give the answer right away,
+debugging skills are valuable everywhere and internships are a great opportunity
+to spend time digging into a problem and really solving it.
+
+- At the same time, be ready to jump in and help. Making slow progress is okay,
+getting stuck is not. Learning how and when to ask for help is an important
+skill so be on the look out for interns who still need to develop this skill.
+Anticipate what could be trouble points and have a plan to mitigate if the
+intern doesn't have a good solution.
+
+- Model the change you want to see in the world. There's nothing like having
+a new person around to make you think about what you could be doing better.
+Show the best of yourself and your community/company.
+
+- Follow up on their work post internship. Share with others what was
+accomplished. Have a plan how it's going to be finished or used.
+
+[^1]: Okay, it was more like "How did this conversation result in me becoming
+a mentor." Not my finest hour.
+
+[^2]: I've vowed to never accept a full-time management position unless I
+think I can actually do the management parts properly. When you screw up people
+management, you are screwing up something much more fundamental and important
+than anything technical. This colors a lot of what I wrote here.
