@@ -3,6 +3,9 @@ date: 2016/09/15 11:00:00
 title: Secure(ish) boot with QEMU
 categories: fedora
 ---
+(Edit 9/21: I've gotten some feedback and clarifications about a few steps and
+also updated the wiki. Thanks to the OVMF developers!)
+
 Despite having too many machines in my possession, none of the x86
 machines I have are currently set up to boot with UEFI. This put a real damper
 on my plans to poke at secure boot. Fortunately, there is virtualization
@@ -14,62 +17,48 @@ This is what I used to get secure boot working (or at least detected) in QEMU.
 I make no guarantees about it actually being secure or signed correctly but
 it's a starting point for experiments.
 
-The QEMU firmware is now available in regular Fedora repos but the full secure
-boot firmware isn't from what I can tell. You need to install the nightly
-firmware.
+The secure boot firmware is available as part of the standard Fedora package.
 
-	$ sudo dnf install dnf-plugins-core
-	$ sudo dnf config-manager --add-repo http://www.kraxel.org/repos/firmware.repo
-	$ sudo dnf install edk2.git-ovmf-x64
+	$ sudo dnf install edk2-ovmf
 
 You need to tell QEMU to pick up the firmware and emulate a file for storing
-EFI variables. The firmware used here is going to be `OVMF_CODE-need-smm`.
+EFI variables. The firmware used here is going to be `OVMF_CODE.secboot.fd`.
 
-	$ cp /usr/share/edk2.git/ovmf-x86/OVMF_VARS-need-smm.fd my_vars.fd
+	$ cp /usr/share/edk2/ovmf/OVMF_VARS.fd my_vars.fd
 
 This creates a copy of the base variables file for modification and use. The
 options you need to append to QEMU are (with some comments in #)
 
 	# required machine type
 	-machine q35,smm=on,accel=kvm
-	# S3 state must be disabled. QEMU hangs silently without this
+	# Due to the way some of the models work in edk2, we need to disable
+	# s3 resume. Without this option, qemu will appear to silently hang
+	# althouh it emits an error message on the ovmf_log
 	-global ICH9-LPC.disable_s3=1
 	# Secure!
 	-global driver=cfi.pflash01,property=secure,value=on
 	# Point to the firmware
-	-drive if=pflash,format=raw,unit=0,file=/usr/share/edk2.git/ovmf-x64/OVMF_CODE-need-smm.fd,readonly=on
+	-drive if=pflash,format=raw,unit=0,file=/usr/share/edk2/ovmf/OVMF_CODE.secboot.fd,readonly=on
 	# Point to your copy of the variables
-	- drive if=pflash,format=raw,file=/home/labbott/Downloads/virt-efivars-HEAD-c520b89/example-varstore-edited
+	- drive if=pflash,format=raw,file=/home/labbott/my\_vars.fd
 
 I added these to the [existing command](http://www.labbott.name/blog/2016/04/22/quick-kernel-hacking-with-qemu-+-buildroot/)
 I had for QEMU. I bumped the memory on the KVM command line to 500 as well
 (`-m 500`). If all goes well, you should be able to boot a kernel and have it
 detect EFI (`dmesg | grep EFI`) with this setup.
 
-Enabling secure boot gets a bit more interesting. The [suggested](https://fedoraproject.org/wiki/Using_UEFI_with_QEMU?rd=Testing_secureboot_with_KVM)
-way to enable secure boot involves downloading into a guest and running from
-the EFI shell. This doesn't work with this setup because a) there is no
-persistent guest state and b) the OVMF framework doesn't include a UEFI shell
-by default. Fortunately, we can fix this by faking an hard drive and putting
-a shell and the EFI application on it to run.
-
-	# dd if=/dev/zero of=my_image.img bs=1M count=10
-	# mkfs.fat my_image.img
-	# mount -o loop my_image.img /mnt/loop_area
-	# mkdir -p /mnt/loop_area/EFI/BOOT/
-	# cp /usr/share/edk2.git/ovmf-x64/Shell.efi /mnt/loop_area/EFI/BOOT/bootx64.efi
-	# wget http://fedorapeople.org/~crobinso/secureboot/LockDown_ms.efi -O /mnt/loop_area/
-	# umount /mnt/loop_area
-
-Add `-hda my_image.img` to your QEMU command and remove the `-kernel` and
-`-initrd` options. If all goes well, you should be dropped into the UEFI
-shell. You can now run the command to add keys
+To actually enable secure boot, we need to run an EFI program to load a set
+of certificates. The default Fedora build provides a nice .iso with the UEFI
+shell and EFI application built in, `/usr/share/edk2/ovmf/UefiShell.iso`.
+Add `-hda /usr/share/edk2/ovmf/UefiShell.iso` to your QEMU command and remove
+the `-kernel` and `-initrd` options. If all goes well, you should be dropped
+into the UEFI shell. You can now run the command to add keys
 
 	Shell> FS0:
-	FS0:\> LockDown_ms.efi
+	FS0:\> EnrollDefaultKeys.efi
 
 Your vars file should now be all set up for secure boot. If you boot with a
-`-kernel` and `-initrd` option, you should be able to boot a signed kernel
+`-kernel` and `-initrd` option, you should be able to boot a kernel
 and have it detect secure boot (`dmesg | grep Secure`).
 
 Booting your own kernels isn't too difficult. If you take a [tree](https://git.kernel.org/cgit/linux/kernel/git/jwboyer/fedora.git/)
