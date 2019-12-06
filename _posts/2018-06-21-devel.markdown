@@ -1,0 +1,49 @@
+---
+layout: post
+date: 2018/06/21 11:00:00
+title: What's a kernel devel package anyway
+category: fedora
+---
+One of the first concepts you learn when building open source software is the
+existance of -devel packages. You have package `foo` to provide some
+functionality and `foo-devel` for building other programs with the `foo`
+functionality. The kernel follows this pattern in its own special kernel
+way for building external modules.
+
+First a little bit about how a module is built. A module is really just a
+fancy ELF file compiled and linked with the right options. It has `.text`,
+`.data`, and other kernel specific sections.
+Some parts of the [build environment](https://www.labbott.name/blog/2018/06/01/more-kbuild-for-reproducible-builds/)
+also get embedded in modules. Modules are also just a socially acceptable way
+to run arbitrary code in kernel mode. Modules are loaded via
+a system call (either by fd or an mmaped address). The individual sections
+(`.text.`, `.data` etc.) get placed based on the ELF header. The kernel
+does some basic checks on the ELF header to make sure it's not complete
+crap (loading for an incorrect arch etc.) but can also do some more complicated
+verification. Each module gets a [version magic](https://git.kernel.org/pub/scm/linux/kernel/git/torvalds/linux.git/tree/include/linux/vermagic.h#n35)
+embedded in the ELF file. This needs to match the running kernel but can be
+overridden with a force option. There's also `CONFIG_MODVERSIONS` which will
+generate a crc over functions and exported symbols to make sure they match
+the kernel that was built. If the CRC in the module and kernel don't match,
+the module loading will fail.
+
+Now consider an out of tree module. The upstream Linux kernel
+doesn't provide an ABI guarantee. In order to build an external module, you
+need to use the same tree that was used to build the kernel. You might be able
+to get away with using a different base but it's not guaranteed to work.
+These requirements are well [documented](https://git.kernel.org/pub/scm/linux/kernel/git/torvalds/linux.git/tree/Documentation/kbuild/modules.txt#n51).
+Actually packaging the entire build tree would be large and unecessary. Fedora
+ends up packaging a subset of the build tree:
+
+- Kconfigs and Makefiles
+- header files, both generic and architecture specific
+- Some userspace binaries built at `make modules_prepare` time
+- The kernel symbol map
+- Module.symvers
+- A few linker files for some arches
+
+Annoyingly, because each distribution does something different, all of this
+has to be done manually. This also means we find bugs when there are new
+dependencies that need to be packaged. I really wish we could just get away
+with building the module dependencies at runtime but doesn't work with the
+requirements.

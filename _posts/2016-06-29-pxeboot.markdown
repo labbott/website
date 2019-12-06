@@ -1,0 +1,82 @@
+---
+layout: post
+date: 2016/06/29 11:00:00
+title: Notes on PXE booting with Fedora
+category: fedora
+---
+The typical method of installing Fedora on a desktop distribution is via some
+physical media (CD/DVD once upon a time, USB sticks these days). Fedora also
+supports [PXE boot installation](https://docs.fedoraproject.org/en-US/Fedora/24/html/Installation_Guide/chap-pxe-server-setup.html).
+I ended up doing a PXE install for some recent hardware that was shipped to me
+as that was the best supported method. The Fedora instructions are good but
+I still ran into a few hiccups. These are my notes which might be useful for
+others (or be wrong, YMMV). This was also a UEFI only setup.
+
+A very hand-wavy explanation of what happens with the [PXE Boot protocol](https://en.wikipedia.org/wiki/Preboot_Execution_Environment)
+is that the booting computer does a DHCP request to get an IP address and
+in addition to the IP address the booting computer gets back information about
+a server and what file to get off the server. If your home network setup is
+like mine, there is a router which serves as the DHCP server for all computers.
+Setting up another DHCP server on the network is a recipe for a bad time. The
+PXE boot protocol does include support for having a proxy DHCP server for cases
+like this and there is [software](http://cobbler.github.io/manuals/quickstart/)
+to do so. I'm lazy and didn't want to set that up for something which would
+only be temporary. The option I chose was to run an ethernet cable directly
+from the booting machine to another machine acting as a server. I used the
+192.168.0.X as my network space and set it up on the server
+
+	# ifconfig <interface name> 192.168.0.2
+
+and setup a dhcpd.conf:
+
+	subnet 192.168.0.0 netmask 255.255.255.0 {
+	 default-lease-time 600;
+	 max-lease-time 7200;
+	 ddns-update-style none;
+
+	 option routers 192.168.0.1;
+	 option domain-name-servers 196.168.0.1;
+	 option subnet-mask 255.255.255.0;
+	 next-server 192.168.0.2;
+
+	 host my-booting-machine {
+	 hardware ethernet 00:01:73:02:3B:9C;
+	 fixed-address 192.168.0.123;
+	 }
+
+	 filename "uefi/shim.efi";
+	}
+
+I have a really limited networking background but the important points are
+setting the MAC address for your target booting system correctly, making
+sure next-server is set to the TFTP server (same machine as DHCP in my case)
+and not munging up an existing IP name space.
+
+The tftp server mostly takes care of itself. I had to unblock tftp in the
+firewall
+
+	# firewall-cmd --add-service=tftp
+
+When something doesn't work (I say when and not if because I'm cynical), you
+can enable some logging and run some tests. The suggested command in the
+Fedora install instructions `journalctl --unit dhcpd --since -2m --follow`
+is very helpful to see if the DHCP request is making it to your server. I used
+that plus some [wireshark](https://www.wireshark.org/) to first discover I
+needed to use a different port on the machine for PXE booting and then that I
+typoed the MAC address in the DHCP configuration file.
+
+If your DHCP is working but TFTP is failing, you can do a short test on another
+computer
+
+	$ tftp
+	(to) <ip addr of server>
+	tftp> get
+	(files) <name of file in your tftp path e.g. uefi/shim.efi>
+
+If everything is setup correctly, you should be able grab the file. If not,
+you can check the journal on the server to see if that's throwing any errors.
+
+Make sure you use the grub files [specified](https://docs.fedoraproject.org/en-US/Fedora/24/html/Installation_Guide/pxe-bootloader.html).
+These are set up to do the network install and download from the internet.
+This sounds obvious but was yet another case of me not reading the fine manual
+properly and wondering why things aren't working.

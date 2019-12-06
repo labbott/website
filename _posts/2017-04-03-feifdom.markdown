@@ -1,0 +1,77 @@
+---
+layout: post
+date: 2017/04/03 11:00:00
+title: Complaining about the kingdom of kernel
+category: fedora, complaining
+---
+Jonathan Corbet of [LWN](http://www.lwn.net) gave a keynote at Linaro Connect
+about [The kernel's limits to growth](http://connect.linaro.org/resource/bud17/bud17-500k1/).
+The general summary was that the kernel had scaling problems in the late 90's
+(A single "B"DFL does not scale) but the developers figured out a method that
+was more sustainable. There's a growing concern that we're about to hit another
+scaling problems with insufficient maintainers. Solving this has gotten
+[some](https://www.fordfoundation.org/library/reports-and-studies/roads-and-bridges-the-unseen-labor-behind-our-digital-infrastructure/)
+[attention](https://www.coreinfrastructure.org/) of late. I have a lot of
+thoughts about maintainership and growing in the kernel (many of which
+can be summarized as "well nobody has told me to stop yet") but this is not
+that blog post. The talk mentioned that kernel development can be described
+as "A bunch of little feifdoms". This is a superb metaphor for so many things
+in Linux kernel land.
+
+The terrible secret of Linux kernel development is that there really isn't
+a single kernel project. Sending stuff to just [LKML](http://www.labbott.name/blog/2015/10/02/the-art-of-communicating-with-lkml/)
+is unlikely to go anywhere. Using `get_maintainer.pl` will tell you who the
+maintainers are and what mailing lists to use[^1] but it won't tell you how
+the maintainer actually maintains or their preferences. There are some common
+[documented guidelines](https://git.kernel.org/pub/scm/linux/kernel/git/torvalds/linux.git/tree/Documentation/process/)
+for getting things in but there always seems to be an exception. The networking
+stack has a long list of the ways it is different. Some subsystems use
+[patchwork](http://www.labbott.name/blog/2015/12/15/grabbing-kernel-patches-from-mailing-lists-and-the-internet/)
+as a method for tracking and acking patches.
+The ARM32 maintainer has his own separate system for tracking patches. DRM
+is embracing a [group maintainer model](http://blog.ffwll.ch/2017/01/maintainers-dont-scale.html).
+
+The end result is that sending patches to different subsystems means figuring
+out a different set of procedures.
+This problem is certainly not unique to the kernel. The hardest part of open
+source is always going to be the social aspect and dealing with how others
+want to handle a project. No one tool is ever going to solve this problem.
+The kernel seems to be particularly in love with the idea of letting everyone
+do their own thing so long as it doesn't make anyone else too mad. I'm sure
+this worked great when all the kernel developers could fit in one room but
+these days having one set of procedures for the entire kernel would make
+things run much smoother.
+
+If the kernel community is made up of feifdoms, then the kernel community
+itself is a strange archaic kingdom[^2].
+Many of Ye Olde kernel developers love to [talk](https://kernel-recipes.org/en/2016/talks/patches-carved-into-stone-tablets/)
+about why e-mail is the only acceptable method for kernel development. I'm
+going to pick on this talk for a bit. I can't
+deny that many of the other options aren't great. I refuse to believe that
+github having pull requests separate from the mailing list is actually worse
+than each subsystem having a completely separate mailing list though. Good luck
+if someone forgets to Cc LKML or if your mailing list[^3] doesn't have
+patchwork.
+Having everything go to mailing list also doesn't guarantee anyone will
+actually review it or learn from it. The way to learn from an open source
+community is to make deliberate time to read and review what's being submitted.
+People can learn whatever tool is available to make this happen if they want
+to be engaged with the community. Maybe this is e-mail, maybe this is github.
+Whatever. The harder part is making sure people want to use the preferred
+communication method to review what's going on in the community.
+
+Once again, I seem to have come around to the point of community building,
+something which the Linux kernel community still seems to struggle at.
+The kernel community problems are well documented at this point and I don't
+feel like enumerating them again.
+The scaling problems of the kernel are only going to get worse if nobody
+actually wants to stick around long enough to become a maintainer.
+
+[^1]: Among my list of petty grievances is that mailing lists can be hosted on
+a variety of servers so there isn't always a unified place to look at archives.
+RIP GMANE.
+
+[^2]: Insert Monty Python and the Holy Grail joke here
+
+[^3]: I love you linux-mm but either your patchwork is incredibly well
+hidden from me or it doesn't exist, both of which make me sad.

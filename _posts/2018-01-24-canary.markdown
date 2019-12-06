@@ -1,0 +1,45 @@
+---
+layout: post
+date: 2018/01/24 11:00:00
+title: When the canary breaks the coal mine
+category: fedora
+---
+Nobody likes it when kernels don't work and even less so when they are broken
+on a Friday afternoon. Yet that's what happened last Friday. This was
+particularly unsettling because at -rc8, the kernel is expected to be rock
+solid. An early reboot is particularly unsettling. Fortunately, the issue
+was at least bisected to a [commit](https://git.kernel.org/pub/scm/linux/kernel/git/torvalds/linux.git/commit/arch/x86/mm/mem_encrypt.c?id=bacf6b499e11760aef73a3bb5ce4e5eea74a3fd4)
+in the x86 tree. The bad commit changed code for an AMD specific feature but
+oddly the reboot was seen on non-AMD processors too.
+
+It's easy to take debug logs for granted when you can get them. The kernel
+nominally has the ability for an 'early' printk but that still requires setup.
+If your kernel crashes before that, you need to start looking at other debug
+options (and your life choices). This was unfortunately one of those crashes.
+Standard x86 laptops don't have a nice JTAG interface for hardware assisted
+debugging. Debugging this particular crash was not particularly feasible
+beyond changing code and seeing if it booted.
+
+I ended up submitting the bisection to the upstream developers. Nobody could
+immediately see anything wrong with the commit, and few people could reproduce
+the problem. Ingo Molnar [suggested](https://marc.info/?l=linux-kernel&m=151645164310307&w=2)
+a bunch of reasons why very early boot code tends to break. One of his
+suggestions was to do a diff between good and bad object files to check the
+relocations. Interestingly, this showed a new call to ` __stack_chk_fail`.
+When kernel (or any code) is compiled with `-fstack-protector`, the compiler
+adds code to verify the stack canary. If the stack canary is overwritten, the
+code branches to `__stack_chk_fail`. On x86, checking the stack canary is
+handled via per-cpu functions. These also need to be set up so using them in
+very early code is not going to work. This explained why the crash happened
+on a supposedly good commit: the code did some refactoring to put a structure
+on the stack which was big enough to trigger the stack protector checking.
+The developers who submitted the code probably weren't testing with the
+strong stack protector so they would not have caught this. The fix ended up
+being simple: put `__nostackprotector` on the refactored function.
+
+This code came in as part of the ongoing work for Spectre/Meltdown. All of this
+work has been an important reminder of why the kernel (usually) follows a
+particular schedule of when new features are accepted. Bugs are always going
+to happen but the goal is to find them during the merge window or -rc1, not
+-rc8. This kernel got a -rc9 release in part due to this bug, hopefully the
+kernel comes out on schedule this Sunday.

@@ -1,0 +1,85 @@
+---
+layout: post
+date: 2018/11/28 11:00:00
+title: String copying in the kernel
+category: fedora
+---
+One of the many areas that the [kernel self protection project](http://kernsec.org/wiki/index.php/Kernel_Self_Protection_Project)
+looks at is making sure kernel developers are using APIs correctly and safely.
+The string APIs, in particular string copying APIs, seem to be one area that
+gets developers confused. Strings in C aren't real[^1] in that there isn't a
+proper string type. For the purposes of this discussion, a C string is an
+array of characters with a terminating `NUL` (`\0`) character.
+
+One of the obvious operations a programmer would want to do is copy a string.
+There's an API `strcpy` to do so:
+
+	char *strcpy(char *dest, const char *src);
+
+From the man page:
+
+       The  strcpy()  function  copies the string pointed to by src, including
+       the terminating null byte ('\0'), to the buffer  pointed  to  by  dest.
+       The  strings  may  not overlap, and the destination string dest must be
+       large enough to receive the copy.  Beware  of  buffer  overruns!   (See
+       BUGS.)
+
+That last sentence is important and the source of numerous bugs. Because C
+strings don't have an inherent length associated with them, it's up to the
+programmer to know/check the length everywhere. Otherwise, you may end up
+copying bytes outside the `dst` buffer. This is pretty annoying and
+error prone so there's another API, `strncpy`
+
+	char *strncpy(char *dest, const char *src, size_t n);
+
+This one takes a length parameter so it's getting better. From the man page:
+
+       The  strncpy()  function is similar, except that at most n bytes of src
+       are copied.  Warning: If there is no null byte among the first n  bytes
+       of src, the string placed in dest will not be null-terminated.
+
+       If  the  length of src is less than n, strncpy() writes additional null
+       bytes to dest to ensure that a total of n bytes are written.
+
+That last sentence in the first paragraph is, again, important. If your `src`
+string is greater than `n` your buffer will not be `NUL` terminated. You may not
+have written beyond the buffer but the next time you access the string at `dst`
+C will happily look in the next memory area until it sees a `NUL` character.
+It's also pretty easy to run into some anti-patterns with `strncpy`. If you
+don't specify the bound on `n` correctly, it's possible to overrun the buffer.
+If your bound for `n` is a function of your `src` string, you haven't solved
+anything. gcc has started to [warn](https://git.kernel.org/pub/scm/linux/kernel/git/torvalds/linux.git/commit/?id=c2b94c72d93d0929f48157eef128c4f9d2e603ce)
+on some of these issues which is helpful (if annoying to clean up).
+
+There's also `strlcpy`:
+
+	 size_t strlcpy(char *dst, const char *src, size_t size);
+
+I couldn't quite find the full history but this one seems to be derived from
+BSD. From the kernel's `lib/string.c`:
+
+        Compatible with ``*BSD``: the result is always a valid
+        NUL-terminated string that fits in the buffer (unless,
+        of course, the buffer size is zero). It does not pad
+        out the result like strncpy() does.
+
+So `strlcpy` will solve the truncation issue but will not pad the buffer. The
+padding may or may not be behavior that's wanted. `strlcpy` in the kernel
+also has the implementation detail of calling `strlen(src)` which means that
+you will always be reading the entire string length even if you only specify
+a subset of the string to be copied. This shouldn't matter for most uses but
+there may be cases which could result in reading memory unexpectedly if `src`
+is not `NUL` terminated.
+
+There's also [strscpy](https://git.kernel.org/pub/scm/linux/kernel/git/torvalds/linux.git/commit/?id=30035e45753b708e7d47a98398500ca005e02b86)
+which was introduced in 2015 and is designed to be a combination of both
+`strcpy` and `strlcpy`. This was not without [controversy](https://lwn.net/Articles/659214/)
+but today the API is frequently preferred over either `strncpy` or `strlcpy`.
+
+More important than a general rule of "You should always use `strscpy`" is to
+make sure you understand what all the APIs do. There _may_ be cases where
+it is appropriate to just use `strcpy` or you want the behavior of `strncpy`
+or `strlcpy`. If you're doing something unusual, please document your code
+for the benefit of others.
+
+[^1]: C strings are about as real as Linux containers.

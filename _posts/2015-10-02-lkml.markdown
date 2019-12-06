@@ -1,0 +1,155 @@
+---
+layout: post
+date: 2015/10/02 16:00:00
+title: The Art of Communicating with LKML
+category: fedora, kernel
+---
+For most users of distros, the distro bug system is the first line of interaction
+when something kernel related breaks on their system. This makes sense: the
+kernel most users are using is packaged by a distro so the maintainers should
+be the first ones to take a look at the problem. Inevitably though, something
+will arise such that the solution cannot come from the distro maintainers
+and must come from the greater kernel community. Sometimes the distro
+maintainers can do the follow up but there may be a request for the bug reporter
+or reproducer to contact the kernel mailing list directly. Now everything
+depends on how successful the person is in communicating with LKML.
+
+The Linux Kernel Mailing List (LKML) has a somewhat deserved reputation for
+being difficult to work with. There are plenty of stories out there of
+kernel developers getting into nasty arguments that devolve into personal
+attacks (I don't feel like linking to anything specific here, google will
+find stories). A common response I've heard before is "oh that only happens
+with old timers, it doesn't happen to new people". That's a horrbile
+statement to make. How is that supposed to encourage people to not only
+contribute but keep contributing and become old timers? The correct response
+should be  "Toxic behavior should not be tolerated towards anyone".
+There has been a notable push to improve things for everyone with things like the
+[Code of Conflict](https://git.kernel.org/cgit/linux/kernel/git/torvalds/linux.git/tree/Documentation/CodeOfConflict).
+From my personal experience, most interactions with the kernel community
+have been without flames and personal attacks. People give constructive
+technical feedback without tearing people down. Positive experiences
+will never erase history or any future bad behavior that may occur though.
+I believe the kernel community is moving in the right direction though
+and I hope to continue working in it to make it better.
+(Edit 10/6: I would be remiss if I didn't link to
+[this](http://sarah.thesharps.us/2015/10/05/closing-a-door/) blog post
+talking about leaving because of LKML culture)
+
+More common than a flame is for messages to be ignored. From personal
+experience this is even more frustrating than a "No you're wrong".
+Apart from the usual 'write a good bug report' tips, there are several
+common issues I see that can contribute to no response or a bad response
+(I've been guilty of most of these at one time or another)
+
+- *Using bugzilla.kernel.org instead of the mailing list*: This isn't
+strictly the mailing list but it's a related problem I've seen.
+[bugzilla.kernel.org](http://bugzilla.kernel.org) is nice but some maintainers look at it more than
+others. In general if you want a response it's usually more effective
+to go directly on the mailing list
+
+- *Not doing your homework*: The kernel community should be understanding
+of new people who are contributing but the flip side of that is making
+sure the contributions are the best they can be.
+See if your question has been asked on the mailing list before. If it
+has but didn't get an acceptable response, it's okay to ask again
+but cite the previous ask. 
+Review [SubmitChecklist](https://git.kernel.org/cgit/linux/kernel/git/torvalds/linux.git/tree/Documentation/SubmitChecklist).
+Double check that your patch actually compiles. It's okay if it isn't
+perfect but make your best effort.
+
+- *Sending to a mailing list only and not an actual person*: LKML is
+a very high traffic mailing list. Most people don't read every message
+that comes through. Sending a message just to LKML is not likely to
+get a response. At the very least, find an appropriate subsystem
+mailing list and maintainer to send a question to. To get an idea on
+where to start, the kernel provides a script called `get_maintainer.pl`.
+This takes a patch file as input or a file name with the `-f` flag and
+will spit out mailing list and maintainer info. LKML will always be
+on there.
+
+- *Sending to the wrong people* - get_maintainer is great but it sometimes
+spits out information that's hard to make sense of. Example with e-mails
+redacted for spam purposes:
+
+		$ scripts/get_maintainer.pl -f mm/page_alloc.c
+		Andrew Morton <akpm@XXX> (commit_signer:102/106=96%)
+		Mel Gorman <mgorman@XXX> (commit_signer:33/106=31%,authored:15/106=14%,added_lines:440/1649=27%,removed_lines:173/1243=14%)
+		Vlastimil Babka <vbabka@XXX> (commit_signer:31/106=29%,authored:19/106=18%,added_lines:374/1649=23%,removed_lines:346/1243=28%)
+		Michal Hocko <mhocko@XXX> (commit_signer:21/106=20%)
+		Joonsoo Kim <js1304@XXX> (commit_signer:18/106=17%,authored:16/106=15%,added_lines:258/1649=16%,removed_lines:149/1243=12%)
+		Johannes Weiner <hannes@XXX> (authored:9/106=8%,added_lines:97/1649=6%,removed_lines:141/1243=11%)
+		Alexander Duyck <alexander.h.duyck@XXX> (added_lines:98/1649=6%)
+		Sasha Levin <sasha.levin@XXX> (removed_lines:169/1243=14%)
+		linux-mm@kvack.org (open list:MEMORY MANAGEMENT)
+		linux-kernel@vger.kernel.org (open list)
+
+	Here we have a list of people and linux-mm (subsystem mailing list) and LKML.
+
+	Are all these people maintainers? No, get_maintainer tries to be clever and find
+	other people who have last touched the file. Unless it says MAINTAINER or SUPPORTER
+	you should not assume that get_maintainer has spit out an actual maintainer.
+	Does that mean they want to review your patch or answer your question? Maybe or
+	maybe not. If they don't have a high percentage of commits, they may have done
+	cleanup or contributed something minor. They are probably not a good person to
+	add.
+
+	Another distinction to make is subsystem maintainer vs. driver maintainer.
+	A driver maintainer is responsible for one or more specific
+	driver files of a specific subsystem. The subsystem maintainer is responsible
+	for the overall architecture and generic parts of a subsystem. If you are fixing
+	a driver it is always good to e-mail the driver maintainer and the subsystem
+	maintainer. In this sample, someone is listed as `MEDIA DRIVER` maintainer
+	(driver maintainer)  and
+	someone else is listed as `MEDIA INPUT INFRASTRUCTURE` maintainer (subsystem maintainer):
+
+		$ scripts/get_maintainer.pl -f drivers/media/dvb-frontends/si2168.c
+		Antti Palosaari <crope@XXX> (maintainer:SI2168 MEDIA DRIVER)
+		Mauro Carvalho Chehab <mchehab@XXX> (maintainer:MEDIA INPUT INFRASTRUCTURE (V4L/DVB))
+		linux-media@vger.kernel.org (open list:SI2168 MEDIA DRIVER)
+		linux-kernel@vger.kernel.org (open list)
+
+	I often use  `get_maintainer.pl` to get a list of potential people
+	and then filter it down more by looking at `git log` and `git blame`.  A kernel
+	commit may look something like:
+
+		From: Kozlov Sergey <serjk@XXX>
+		Date: Tue, 28 Jul 2015 11:33:02 -0300
+		Subject: [media] lnbh25: LNBH25 SEC controller driver
+
+		Add DVB SEC frontend driver for STM LNBH25PQR chip.
+
+		[mchehab@XXX: fix merge conflict:
+		fe_sec_voltage_t should not be used in kernelspace anymore.
+		instead, it should use enum fe_sec_voltage]
+		Signed-off-by: Kozlov Sergey <serjk@XXX>
+		Signed-off-by: Mauro Carvalho Chehab <mchehab@XXX>
+
+	The from indicates who actually authored the patch. The Signed-off-by
+	is a [licence assertion](http://www.labbott.name/blog/2015/07/30/please-sign-off-your-patches/)
+	made by the author but the maintainer may also add that as well. In general, if you
+	see someone who is consistently adding their Signed-off-by on others patches it's a good
+	assumption they have some kind of maintainer responsibility and are a good candidate
+	to e-mail if get_maintainer did not already spit them out.
+
+	`git blame` is useful if you have a large or generic file and want to change something
+	in a certain area. Google has lots of tutorials about using git blame to find out
+	who changed a specific part of a file. Be careful about the dates though; if the area
+	hasn't been updated in over a year check in other ways (git log) to see if it makes
+	sense to e-mail.
+
+	Don't under estimate the value of going through the e-mail archives as well. If you
+	see someone consistently reviewing or acking patches for a subsystem or driver,
+	they can be a good person to e-mail even if they aren't a maintainer.
+
+	If I'm sending to subsystem for the first time, my e-mail list usually includes
+
+	1. All people listed as actual maintainers from get_maintainer.pl
+	2. All mailing lists from get_maintainer.pl (LKML is always included, you should always make sure it gets CCed)
+	3. If I only have a subsystem maintainer and not a driver maintainer, I look
+	for up to 3 people who have contributed more than one patch or have been active on the
+	mailing list.
+
+- *Sending to only people and not mailing lists*: In almost no cases should you e-mail someone
+privately about a bug or patch. This is not how the kernel community works and it disrupts the
+flow to try and contact maintainers privately. The limited exception might be security bugs
+which have [their own process](https://git.kernel.org/cgit/linux/kernel/git/torvalds/linux.git/tree/Documentation/SecurityBugs)

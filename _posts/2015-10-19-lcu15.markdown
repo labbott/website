@@ -1,0 +1,66 @@
+---
+layout: post
+date: 2015/10/19 16:00:00
+title: Linaro Connect US '15
+category: fedora, kernel
+---
+One of the items that came out of Linux plumbers for me was discussion on
+the future of the Ion memory manager for Android. While not as relevant
+to my day to day work anymore, I still have a lot of background knowledge
+and input to give. [Linaro Connect](http://connect.linaro.org) happened
+a little over a month after plumbers and I was up there for the week,
+mostly for Ion and other ARM talks. (Non-technically, being at Linaro
+Connect also meant I could avoid the chaos in my apartment from an impending
+move. Yay for convenient excuses!)
+
+Most of my time was spent in a hacking room doing regular Fedora work and
+chatting with people. I made some good progress on the bisection scripts.
+A few sessions I attended:
+
+- There's on going work on getting a
+[generic driver](https://sfo15.pathable.com/meetings/302831)
+for ARM Trustzone merged
+into the kernel. This is what Linaro is really good at: figuring out what's
+common between existing platforms and turning it into something generic.
+The end result should be something which makes communication between the
+secure and non-secure world more standard. The base design is currently
+based on the OP-Tee secure environments. Hopefully this will be a good base
+for others to expand into.
+
+- In more OP-Tee work, Linaro is working on [DRM](https://sfo15.pathable.com/meetings/302837) (not the graphics) for end to end encryption. This more
+standardization work on Linaro's part. Some of my previous worked on Ion
+ended up overlapping with this although most of the discussion went over my
+head.
+
+- My favorite keynotes were probably the last day.
+[Karen Sandler](https://www.youtube.com/watch?v=-GOCsXT8jas) talked about
+open source compliance and her story. I've seen her give a variation of this
+talk before but she's an excellent speaker. It's always good to be reminded of
+exactly why compliance is necessary. 
+
+- There was also a group panel
+discussion on [security](https://www.youtube.com/watch?v=KTeT6yC915Y).
+The panel echos a lot of themes that are popular these days.
+Everyone agrees that security is good but security is hard. There's been a
+big push in the kernel to "elimiate entire classes of bugs" (to borrow a phrase
+from Kees in the video). Convincing everyone to have the right security
+mindset can be difficult though (and even [the best](http://seclists.org/oss-sec/2015/q4/83) need to be reminded to think a bit deeper). The Internet of
+Crap^WThings is another can of worms. Most cell phones are
+[vulnerable](http://www.zdnet.com/article/android-security-a-market-for-lemons-that-leaves-87-percent-insecure/) because they are running old version of
+software. Imagine that on every object in your home. Here's hoping the
+security conversation not only continues but is productive.
+
+- I did have quite a few meetings about Ion and related work. I'll discuss
+those in a later post.
+
+- I didn't end up in any of the ARM server topics this time because of some
+schedule conflicts. There's been both some [skepticism](http://www.theplatform.net/2015/10/06/why-are-we-still-waiting-for-arm-servers/) and
+[hilights](http://www.bloomberg.com/news/articles/2015-10-08/qualcomm-shows-off-first-server-chip-in-effort-to-expand-reach) of the future of the ARM server.
+Linaro connect is always thoroughly in the "We will prevail" camp for
+obvious reasons. It's nice to drink the Kool-Aid sometimes. When the rose
+colored glasses come off though, ARM servers only make sense as a long term
+prospect. Building an ecosystem takes time. Getting hardware that correctly
+conforms to standards and convincing manufacturers to
+[get stuff upstream](https://lwn.net/Articles/659347/) is a long term
+proposition. The market likes competition and anything that might put pressure
+on Intel long term is going to be something to watch. 

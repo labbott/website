@@ -1,0 +1,21 @@
+---
+layout: post
+date: 2018/05/17 11:00:00
+title: The opinion nobody asked for
+category: hottakes
+---
+Tired and cranky is probably not the best time to write a blog post but here
+it goes anyway. The business world seems to love to talk about 'authenticity'
+and 'bringing your whole self' to work. That applies to what you talk about,
+especially if you are a Woman in Tech(tm). If you are passionate about talking
+about diversity and those issues because it's part of who you are, go for it.
+If you'd rather not talk about those issues because it's not who you are,
+that's okay. Most important is to know _why_ you are making your choices. It's
+okay to change your mind too.
+
+None of this is an excuse to not care at all though. The real trick is to
+figure out how _you_ work best. Maybe you're better at talking to other
+privately. Maybe you boost up other people who do want to share their story.
+Maybe you spend your time organizing. There's lots of ways to make the tech
+industry better and most important is learning how to do it in the way that
+works for you. We can all do better.

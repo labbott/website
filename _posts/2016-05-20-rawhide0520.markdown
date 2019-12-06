@@ -1,0 +1,59 @@
+---
+layout: post
+date: 2016/05/20 16:00:00
+title: Rawhide Week 5/16-5/20
+category: fedora, rawhide
+---
+This was the first week of the merge window for the 4.7 kernel. This included
+the merges of at least 43 trees (probably a few more that I didn't list as
+being relevant to Fedora). Highlights for this work:
+
+- The secure boot patches needed to be adjusted several times. Being a large
+out of tree patch set, this is bound to occur sometimes. It usually happens
+because someone tweaked a little bit of context or added a new #define. This
+merge window brought in [some new work](http://article.gmane.org/gmane.linux.kernel.lsm/27551)
+done by David Howells which had major conflicts with [one](http://pkgs.fedoraproject.org/cgit/rpms/kernel.git/tree/KEYS-Add-a-system-blacklist-keyring.patch)
+of the secure boot patches. That series reworked most of the code paths the
+secure boot implementation was touching. [Part of the series](https://git.kernel.org/cgit/linux/kernel/git/torvalds/linux.git/commit/?id=5ac7eace2d00eab5ae0e9fdee63e38aee6001f7c)
+implemented a similar feature to what the secure boot patches was trying to do
+(see line about "could also be used to provide blacklisting"). For now, I left
+the secure boot patch out in favor of what's in tree with a plan to follow up
+later.
+
+- The cpupower library got an [soname bump](https://git.kernel.org/cgit/linux/kernel/git/torvalds/linux.git/commit/?id=ac5a181d065d74fb6b213d538f743392f27bcdbd)
+The only package I could find that actually uses this was part of the mate
+desktop. Here's hoping any other users are doing the right thing.
+
+- This merge has [once again](http://www.labbott.name/blog/2015/12/02/git-binary-files-and-patches/)
+brough in the [deletion](https://git.kernel.org/cgit/linux/kernel/git/torvalds/linux.git/commit/?id=11a65df5732167519937eabf16a870f5f8bde5ee)
+of a binary file. I was curious how many other binary files are in the kernel.
+The answer is not that many. I also found out that file gets really confused
+on some kernel files:
+
+	`$ file arch/s390/boot/compressed/misc.c`
+
+	`arch/s390/boot/compressed/misc.c: Minix filesystem, V3, 20302 zones`
+
+	`$ file arch/alpha/include/asm/atomic.h`
+
+	`arch/alpha/include/asm/atomic.h: Embedded OpenType (EOT)`
+
+	`$ file drivers/gpu/drm/amd/amdgpu/amdgpu_powerplay.h`
+
+	`drivers/gpu/drm/amd/amdgpu/amdgpu_powerplay.h: TI-XX Graphing Calculator (FLASH)`
+
+The merge window brought in the usual set of Kconfig changes. Highlights there:
+
+- LEDs can now be triggered to blink on MTD activity and on kernel panic.
+
+- Not actually part of the merge but the Intel power clamp driver was turned on
+per request on the mailing list.
+
+- Asus i2c keyboard support for EeeBook X205TA and VivoBook E200HA
+
+- ASoC supoort for Broxton platforms with RT298 audio codec driver
+
+- INT3406 display thermal driver
+
+- Support for the schedutil governor. This ties the cpu frequency to output
+from the scheduler.

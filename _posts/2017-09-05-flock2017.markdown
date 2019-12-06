@@ -1,0 +1,58 @@
+---
+layout: post
+date: 2017/09/05 11:00:00
+title: Flock 2017
+category: fedora
+---
+Last week was Flock 2017 in Hyannis, MA. I was there!
+
+I ran a session on kernel process for Fedora. This was
+designed to be an open session for discussion of whatever topics people wanted.
+We spent quite a lot of time on the future of Fedora kernel testing. Fedora
+has been discussing [continuous integration](https://fedoraproject.org/wiki/CI)
+across the project as a way to
+improve overall quality. The kernel has a [set](http://fedoraproject.org/wiki/QA:Testcase_kernel_regression)
+of tests that get run on every kernel build. There's interest from within
+Red Hat (my employer) to expand on this further. Red Hat
+recently [publicly released](https://pagure.io/skt) one of their basic
+test suites for kernel testing. The ultimate goal is to use this plus other
+tests cases to run a service similar to the Intel [0-day](https://01.org/lkp/documentation/0-day-test-service)
+testing for upstream kernels. This way, bugs can be found and hopefully fixed
+sooner.
+
+There was some discussion about a potential increase in bugs with a move to CI.
+There are only two people full time on the Fedora kernel vs. a lot more bugs and
+reporters. How do we make additional reports scale? This has been a problem
+with Fedora for a long time and there still isn't a good answer. Trying to
+turn all contributors into kernel developers isn't very practical. What is
+practical is supporting contributors who do have the time and skills to bisect
+and report bugs to the upstream community. The hope is also that bugs which do
+get reported from the CI effort will be of high enough quality to reliably
+solve, or at least report.
+
+The kernel session was very productive. One of the items that came out of it
+was the idea for a kernel test day. Details about this will be coming as soon
+as they are arranged.
+
+Apart from my own session, I went to a couple of talks about ARM given by
+Peter Robinson and Robert Wolff. Peter gave his usual "State of Fedora on ARM"
+talk. The state is pretty great, thanks to his hard work. More and more boards
+are enabled with each release and hardware features continue to be added.
+There's an ongoing project to make installation more 'boring' by adding support
+to uBoot. Robert Wolff talked about supporting Fedora on
+[96boards](https://96boards.org/) based devices. As more and more devices
+get hardware support upstream, it gets more plausible to support them in
+Fedora. I expect support will only continue to improve as newer versions of
+the hardware specification come out.
+
+I spent most of the rest of my time in the hallway track. Highlights there:
+
+- Chatting about Outreachy. The next round is coming up shortly so look for
+the CFP soon.
+- i686 kernels. The i686 SIG is slowly getting started. Justin and I gave some
+suggestions on what it might take for them to be successful.
+- Syncing up on a couple of ongoing bug reports.
+- Stories about hardware older than me.
+
+Thanks to all the organizers for putting together a great conference and giving
+me an excuse to eat delicious Cape Cod food.

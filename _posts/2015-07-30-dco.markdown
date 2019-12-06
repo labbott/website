@@ -1,0 +1,50 @@
+---
+layout: post
+date: 2015/07/30 11:00:00
+title: Please sign off your patches
+category: fedora
+---
+One aspect of open source that appeals to many people is the idea that anyone
+can contribute. All it takes is a great idea, a little bit of work, and you
+can have fame, glory, and more conference t-shirts than you know what to do
+ with. The reality is often not quite as simple for many reasons. A common
+complication is software licencing. There are [plenty](https://www.google.com/?q=open+source+software+license+intro) of [other](https://www.fsf.org/news/) [locations](https://sfconservancy.org/blog/)
+[talking](http://mjg59.dreamwidth.org) about open source software licencing and
+the complications there of so this one will be narrowly
+focused and have a simple request: When submitting patches for the Linux
+kernel, whether to official kernel mailings lists or to Fedora, please
+remember sign off your patches.
+
+Luis Rodriguez has a great [blog post](http://www.do-not-panic.com/2014/02/developer-certificate-of-origin.html) on the history of the DCO. In over simplfied
+terms, the
+DCO is an assertion of 'Yes, I am permitted to include this code in
+this open source project'. Many projects, including the Linux kernel, require
+this assertion before taking any patch. Adding it is simple enough: simply
+add `Signed-off-by: Your Name <your@e-mail.address>` to the bottom of your
+commit text. If you can make the assertions in http://developercertificate.org,
+you can add a Signed-off-by. 
+
+Is the Signed-off-by needed in all patches? Yes. Even cleanup patches? Yes.
+Even patches that just add a few device ids? Yes. Even patches that don't do
+anything useful? If a patch isn't useful it shouldn't be getting merged, but
+yes. A pattern I've seen a few times is
+
+* Person has problem
+* Person googles for problem
+* Person finds someone else had the same problem, someone else had a fix for
+the issue
+* Person tests the fix -- it works!
+* Person excitedly e-mails the fix to maintainers to get it included
+
+Often the fix lacks a proper DCO so even if the patch is perfect in any other
+way, the maintainers cannot take the patch. This leaves everyone feeling 
+frustrated. But just because a patch was submitted
+once without a proper DCO doesn't mean it can't be re-submitted later; if you
+can get in contact with someone (e.g. original author, co-maintainer) who can
+make the assertions of the DCO, the patch can be resubmitted. Until that
+happens though there isn't much the maintainers of the project can do with
+the patch.
+
+It's vital to the success of open source projects that licences are followed.
+So please, if you want your patch included make sure to add your
+Signed-off-by.

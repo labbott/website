@@ -1,0 +1,98 @@
+---
+layout: post
+date: 2016/10/03 11:00:00
+title: Linaro Connect Las Vegas 2016
+category: fedora
+---
+I spent last week at Linaro Connect in Las Vegas. Nominally I was there for
+some discussions about Ion. The week ended up being fairly full of the gamut
+of ARM topics.
+
+IoT is still a top buzzword. Linaro [announced](http://www.linaro.org/news/linaro-announces-lite-collaborative-software-engineering-internet-things-iot/)
+the founding of the LITE (Linaro IoT and Embedded) group. The work that this
+group has done so far is mostly related to Cortex-M processors which don't
+run Linux. This is a change of pace from a consortium that has exclusively
+focused on Linux. The Linux Foundation has done the same thing, given their
+focus on the [Zephyr Project](https://www.zephyrproject.org/). I see this shift
+for three reasons: 1) vendors want an end-to-end solution and reduced
+fragmentation and Linaro/Linux Foundation provide a good forum to do this
+because 2) both Linaro and the Linux Foundation are very good at courting
+companies and engaging in 'corporate hand holding' through open source
+projects especially 3) when bootstrapping relatively new projects. This is not
+intended to be a negative, sometimes companies need to
+throw money at outside entities to inform them what needs to be done (even
+when internal employees are shouting the same thing). Corporate influence in
+open source can certainly be [critiqued](http://discuss.ardupilot.org/t/ardupilot-and-dronecode/11295)
+but I'm optimistic about that not being a problem for Linaro[^1].
+
+Red Hat also announced its involvement in the LITE group. Red Hat's interest
+aren't in the RTOS Microcontroller space but the higher level gateway. All
+those IoT devices have to communicate somewhere and a centralized gateway
+makes it easier to manage those devices, especially for industrial use cases.
+Hearing the full-stack story of IoT was a good learning experience for me,
+as I mostly have my head in the kernel. Everyone seems to be learning
+everywhere and most of the work is brand new. The Zephyr project was talking
+about writing new IP stacks which should give you some idea of where these
+projects are right now.
+
+In not IoT things, I sat in on the firmware mini conference. This was mostly
+an update about ACPI and UEFI related things for server platforms. arm64
+ACPI and UEFI support has come a very long way. In the Fedora kernel, we
+carry very few arm64 related patches. Basic virtualization works and servers
+boot in a 'boring' manner. PCIE quirks are still an ongoing TODO item along
+with SMMU work. There was discussion about the next version of the UEFI spec,
+or as much discussion as could be had, given UEFI rules. Leif Lindholm gave an
+update about Tianocore, the open source UEFI implementation. There's been
+some change in community governance to hopefully make more forward progress,
+which is always good to hear.
+
+I had a meeting with some of the other folks who have been working on
+kernel hardening for arm64. arm64 mostly has feature parity with x86 for
+hardening features that have been merged. There's ongoing work for software
+emulation of Privilege Access Never (PAN) on targets that don't have this
+in hardware. Newer features like vmapped stacks are works in progress but
+should have a short window for merging. We concluded that many of the features
+on the [wiki](http://kernsec.org/wiki/index.php/Kernel_Self_Protection_Project)
+involve becoming a gcc hacker. Nobody stepped up to do that quite yet so
+that's still an open project[^2]. I spent some time hacking on a patch set to
+do  checking for writable/executable pages to match with x86. I sent v1 out
+at the end of last week, so v2 will probably come after the merge window
+closes in a few weeks.
+
+As mentioned, my nominal reason for heading to Linaro connect was for
+discussion about Ion. I was excited to report we had made some good progress
+with things like platform support. Then several devicetree people announced
+that they hadn't gotten around to giving feedback and they still don't like
+the idea of Ion in devicetree. So much for that milestone. There was some
+interesting discussion that came out of XDC last week where apparently the
+DRM layer is looking for something similar to constraint solving. This was
+interesting to hear as the constraint solving had become less important for
+Ion in recent years. The discussion in the Android miniconference was useful.
+People do care about Ion so I can't just delete it. I had been hoping for a
+small first step of moving Ion as a self-contained framework out of staging
+into drivers/android/ but that seems less plausible and less of a good idea.
+I had a meeting with others who are working on the secure memory allocation
+framework (SMAF). They need something very similar to Ion and given what the
+DRM people are looking at as well it may in fact be time for a centralized
+constraint allocator (cca instead of Ion as a name?). There's still a month
+before plumbers where there are supposed to be more discussions of Ion. I'll
+have more research and work to do before that.
+
+Most of the videos should be up sometime in the near future if they aren't
+already. I believe the keynotes should be up. You need to watch
+[Sarah Sharp's keynote](http://connect.linaro.org/resource/las16/las16-200k2/)
+which is a great summary of why corporations struggle with upstreaming. I
+may start linking to this the next time a "but why isn't my phone upstream"
+topic comes up. The keynote about [IoT Zephyr](http://connect.linaro.org/resource/las16/las16-300k2/)
+was excellent. [Jono Bacon](http://connect.linaro.org/resource/las16/las16-500k2/)
+gave a great talk about community management.
+
+Overall, it felt like a productive week. I always enjoy meeting with the ARM
+community and this time was no exception.
+
+[^1]: I've met enough of the people involved that I don't see anything that
+extreme happening. If anyone involved is reading this, please don't make me
+eat my words, I'm cynical enough already.
+
+[^2]: If you're looking for a challenging 'how do I get involved in the kernel
+project', the gcc plugins could be for you!

@@ -1,0 +1,89 @@
+---
+layout: post
+date: 2018/12/04 11:00:00
+title: Kconfig symbol visibility
+category: fedora
+---
+I managed to get bit by the same issue twice in about 24 hours so I guess it's
+time for a blog post. If you've ever compiled a kernel, you have dealt with
+kconfig symbols (`CONFIG_FOO`) which are used to enable various options in the
+kernel. You can't select every symbol out that exists in the kernel since that
+would be a nightmare. Configuration options may be limited by adding `depends`
+e.g.
+
+	config FOO
+	    depends on BAR
+	    depends on BAZ if HAS_BAZ
+
+
+Something like `depends on BAR` is statically defined and isn't going to vary
+across systems. It turns out, you can do some interesting tricks and have
+your Kconfig symbol depend on the output of a script. The first time I got bit
+by this was with `CONFIG_GCC_PLUGINS`:
+
+	menuconfig GCC_PLUGINS
+	    bool "GCC plugins"
+	    depends on HAVE_GCC_PLUGINS
+	    depends on PLUGIN_HOSTCC != ""
+
+
+	config PLUGIN_HOSTCC
+	    string
+	    default "$(shell,$(srctree)/scripts/gcc-plugin.sh "$(preferred-plugin-hostcc)" "$(HOSTCXX)" "$(CC)")" if CC_IS_GCC
+
+
+Because of the way gcc plugins work, you need to have an external package
+installed to do anything useful so it makes sense to only show the symbol
+if the package is properly installed.
+
+As a distro maintainer, I'm responsible for looking at new symbols as they are
+added to the kernel. The easiest way to do this is to take the existing config
+file and run `make listnewconfig`. A side effect of the dynamic nature of
+`CONFIG_GCC_PLUGINS` is that if you take a .config generated on a system that
+_doesn't_ have the plugin devel package installed and then use it to run
+listnewconfig on a system that _does_ have the package installed it will
+show up as a new symbol:
+
+	$ make defconfig
+	  HOSTCC  scripts/basic/fixdep
+	  HOSTCC  scripts/kconfig/conf.o
+	  HOSTCC  scripts/kconfig/zconf.tab.o
+	  HOSTLD  scripts/kconfig/conf
+	*** Default configuration is based on 'x86_64_defconfig'
+	#
+	# configuration written to .config
+	#
+	$ make listnewconfig
+	scripts/kconfig/conf  --listnewconfig Kconfig
+	$ sudo dnf install gcc-plugin-devel
+
+	..various installation messages..
+
+	$ make listnewconfig
+	scripts/kconfig/conf  --listnewconfig Kconfig
+	CONFIG_GCC_PLUGINS=n
+
+We have some scripts that expect a clean listnewconfig (i.e. we've set values
+for all configuraiton options) so this led to some confusion about why things
+were not working on my system which had `gcc-plugin-devel` installed ("But this
+worked when we built it last week!")
+
+The other case of dynamic configuration options happened with powerpc. Distros
+support multiple architectures but almost all development is done on our x86
+workstations (until the year arm64 on the desktop happens of course). We can
+generate configuration files by setting the `ARCH=blah` option on the command
+line. Today I discovered that there's a dynamic config option in powerpc:
+
+	config MPROFILE_KERNEL
+	    depends on PPC64 && CPU_LITTLE_ENDIAN
+	    def_bool $(success,$(srctree)/arch/powerpc/tools/gcc-check-mprofile-kernel.sh $(CC) -I$(srctree)/include -D__KERNEL__)
+
+
+This results in `CONFIG_MPROFILE_KERNEL` not being visible unless you have the
+appropriate compiler installed which means, again, different behavior for
+`listnewconfig`.
+
+Obviously the system environment makes a difference when building the kernel but
+it's a bit surprising where this shows up. The moral I have learned is to think
+a little bit more closely about how exactly kernel configuration files are
+generated.

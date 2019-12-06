@@ -1,0 +1,55 @@
+---
+layout: post
+date: 2018/08/14 11:00:00
+title: Flock 2018
+category: fedora
+---
+Last week was [Flock 2018](https://flock2018.sched.com/). Highlights:
+
+- I gave a talk on the relationship between the Fedora and RHEL kernels. The
+short summary is that that the two kernels are not closely related, despite
+the fact that they are supposed to be. I've been working with some people
+inside Red Hat to figure out ways to improve this situation. The goal is to
+have more Red Hat kernel developers participating in Fedora to make the Fedora
+kernel more beneficial for future RHEL work. I talked about some of the
+upcoming work such as syncing up core kernel configuration and packaging. This
+all seemed fairly well received.
+
+- RHEL + Fedora was a theme throughout many presentations. Josh Boyer and
+Brendan Conoboy gave a talk about aligning Fedora and RHEL across the entire
+OS. Some of this was about what you would expect (more testing etc.) but one
+of the more controversial points was suggesting redefining what makes up the
+system vs. applications. RPMs are nominally the smallest unit of a distribution
+but this doesn't quite mesh with the modern concepts of self-contained
+applications. You want to be able to update applications independently of
+the underlying system and vice versa. The talk was fairly high level about
+what to actually do about this problem but it generated some discussion.
+
+- Kevin Fenzi gave a talk about rawhide. As a relative newcomer to the project,
+I enjoyed hearing the history of how rawhide came about and what's being done
+to keep it moving forward. I'll echo the sentiment that rawhide is typically
+fairly usable, so give it a shot!
+
+- Dusty Mabe and Benjamin Gilbert gave a talk about Fedora CoreOS. I've always
+thought the CoreOS concept was a great idea and I'm pleased to see it continue
+on. Some of the talk was a bit of a retrospective about what worked and didn't
+work for CoreOS. Certain parts are going to be re-written. I enjoyed hearing
+the upcoming plans as well as getting to meet the CoreOS team.
+
+- Peter Robinson ran an IoT BOF. IoT is now an official Fedora objective and
+has a regular release. Part of the goal of the BoF was to talk about what
+it currently supports and what people want to do. Several people had
+great plans for utilizing some older hardware and I look forward to seeing
+more projects.
+
+- Peter Robinson and Spot gave a talk on the Raspberry Pi. Support for this
+device has come a long way and there's always [new things](https://nullr0ute.com/2018/04/the-raspberry-pi-3-b-in-fedora/)
+happening. If you have a Raspberry Pi give it a shot!
+
+- There was a session on Fedora in Google Summer of Code and Outreachy. Fedora
+was extremely successful with its interns this past summer and it was great
+to hear from everyone and the mentors. There is another round of [Outreachy](https://communityblog.fedoraproject.org/outreachy-mentors-winter-2018/)
+happening soon as well.
+
+Once again, a great time. Thanks to the organizers to putting on a fantastic
+conference.

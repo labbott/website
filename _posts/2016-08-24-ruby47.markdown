@@ -1,0 +1,173 @@
+---
+layout: post
+date: 2016/08/24 11:00:00
+title: UDP Failures and RNGs
+category: fedora
+---
+Upgrades to a new kernel inevitably break something. 4.7 managed to break a
+Ruby unit test based on a [bug report](https://bugzilla.redhat.com/show_bug.cgi?id=1365940).
+A test to send an empty UDP packet was now timing out. I've never worked with
+Ruby much but the [test](https://github.com/ruby/ruby/blob/trunk/test/socket/test_nonblock.rb#L106)
+itself was easy enough to get a general idea what was going on. I grabbed a copy
+of the ruby source on a rawhide machine and did a mockbuild
+
+	# fedpkg co -a ruby
+	# cd ruby
+	# dnf builddep ruby.spec
+	# fedpkg mockbuild
+
+and saw that it was failing in the same way as the report. This is a very large
+amount of work for what amounts to just one failure and I still wanted to rule
+out other problems besides the kernel. Fortunately, it could easily be narrowed
+down to a smaller test case:
+
+	$ cat weird_ruby.rb
+	#!/usr/bin/env ruby
+
+	begin
+	  require "socket"
+	  require "io/nonblock"
+	  require "io/wait"
+	rescue LoadErrror
+	end
+
+	  def test_udp_recvfrom_nonblock
+	    u1 = UDPSocket.new
+	    u2 = UDPSocket.new
+	    u1.bind("127.0.0.1", 0)
+	    u2.send("", 0, u1.getsockname)
+	    IO.select [u1]
+	  ensure
+	    u1.close if u1
+	    u2.close if u2
+	 end
+
+	test_udp_recvfrom_nonblock()
+
+Ruby devs are probably cringing at the style but the important part is that
+this was a test case that worked on my 4.6 based machine and failed on the 4.7
+based machine. This was a great candidate for bisection. Because I'm lazy and
+don't like rebooting machines, I used my [buildroot](http://www.labbott.name/blog/2016/04/22/quick-kernel-hacking-with-qemu-+-buildroot/)
+setup (I had to recompile my buildroot image to put Ruby in it).
+
+The first bisect in buildroot was useless, it gave me 4.6 as the first bad
+commit which I knew to be false. I tried 4.5. Still bad. I knew the test
+case was definitely passing on other environments in 4.6. strace is (still) my
+favorite userspace tool for 'opaque program, what are you doing' so I decided to
+give it a try:
+
+	brk(0x2560000)                          = 0x2560000
+	brk(0x255c000)                          = 0x255c000
+	brk(0x2580000)                          = 0x2580000
+	brk(0x257c000)                          = 0x257c000
+	brk(0x25a0000)                          = 0x25a0000
+	brk(0x259c000)                          = 0x259c000
+	clock_gettime(CLOCK_PROCESS_CPUTIME_ID, {0, 1882167}) = 0
+	brk(0x25c1000)                          = 0x25c1000
+	getrandom(
+
+getrandom waitwhathuh?
+
+	# cat /proc/1084/stack
+	[<ffffffff813f3ac8>] SyS_getrandom+0xd8/0x140
+	[<ffffffff818e99f2>] entry_SYSCALL_64_fastpath+0x1a/0xa4
+	[<ffffffffffffffff>] 0xffffffffffffffff
+
+The corresponding [code](http://lxr.free-electrons.com/source/drivers/char/random.c?v=4.6#L1601)
+showed it waiting on an event for `nonblocking_pool.initialized`. So the Ruby
+environment was internally trying to get a random number but the nonblocking
+pool wasn't yet initialized. The buildroot environment I run is very minimalist,
+there isn't much in the way of devices or drivers. The buildroot init system
+writes a set of random data to initialize the RNG but the RNG code doesn't
+actually [update](http://lxr.free-electrons.com/source/drivers/char/random.c#L483)
+the calculation of entropy. This means that another call to add entropy must
+update the calculation. Usually the system uses things like device interrupts or
+input timing to generate entropy. In a minimal system like buildroot, most of
+these aren't present. The most reliable source of entropy is typing on the
+keyboard and, yes, if I keyboard enough the pool will eventually initialize.
+I should probably put a big blinking HACK sign here before I state my solution.
+In the buildroot init file, right before the write to the RNG with random data
+I did
+
+	for i in `seq 0 1024`; do
+		asdf
+	done
+
+The idea ws to spawn a bunch of different processes in hopes that it would give
+a bump of entropy to the system. It did indeed work. This is not endorsed as a
+solution for anything other than 'let me run my Ruby program plx'. I'm certain
+there are better ideas out there. It's worth noting this limitation is no
+longer present on newer kernels. There has been some reworking of the random
+number generator to mitigate problems like these.
+
+Once the Ruby problem was fixed, I could actually bisect and found a very
+promising and [relevant](https://git.kernel.org/cgit/linux/kernel/git/torvalds/linux.git/commit/?id=e6afc8ace6dd5cef5e812f26c72579da8806f5ac)
+commit. Reporting a kernel bug with a Ruby program still leaves a lot open to
+wonder about, especially after hitting unexpected problems with the RNG. When
+submitting kernel problems, it's best to submit C when possible. So with the
+help of strace (again!) to see what exactly Ruby was doing, I ported the Ruby
+code to some roughly corresponding C code:
+
+	#include <stdio.h>
+	#include <stdlib.h>
+	#include <sys/types.h>
+	#include <sys/socket.h>
+	#include <unistd.h>
+	#include <arpa/inet.h>
+	#include <netinet/in.h>
+	#include <string.h>
+	#include <netdb.h>
+	#include <errno.h>
+
+	int main()
+	{
+		int fd1, fd2;
+		struct sockaddr_in addr1;
+		unsigned int len1;
+		int ret;
+		fd_set rfds;
+
+		fd1 = socket(AF_INET, SOCK_DGRAM|SOCK_CLOEXEC, IPPROTO_UDP);
+		fd2 = socket(AF_INET, SOCK_DGRAM|SOCK_CLOEXEC, IPPROTO_UDP);
+
+		if (fd1 < 0 || fd2 < 0) {
+			printf("socket fail");
+			exit(1);
+		}
+
+		len1 = sizeof(addr1);
+
+		memset(&addr1, 0, sizeof(addr1));
+		addr1.sin_family = AF_INET;
+		addr1.sin_addr.s_addr = inet_addr("127.0.0.1");
+		addr1.sin_port = htons(0);
+		ret = bind(fd1, (struct sockaddr *)&addr1, len1);
+		if (ret < 0) {
+			printf("bind fail %d\n", errno);
+			exit(1);
+		}
+
+		ret = getsockname(fd1, (struct sockaddr *)&addr1, &len1);
+		if (ret < 0) {
+			printf("getsockname failed %d\n", errno);
+			exit(1);
+		}
+		ret = sendto(fd2, "", 0, 0, (struct sockaddr *)&addr1, len1);
+		if (ret < 0) {
+			printf("sendto failed %d\n", errno);
+			exit(1);
+		}
+
+		FD_ZERO(&rfds);
+		FD_SET(fd1, &rfds);
+		select(fd1+1, &rfds, NULL, NULL, NULL);
+	}
+
+Again, not the prettiest code but it also showed the problem in the same way
+as the Ruby code. Once I submitted the bug, the turn around time was very fast
+and the bug fix got [merged](https://git.kernel.org/cgit/linux/kernel/git/davem/net.git/commit/?id=e83c6744e81abc93a20d0eb3b7f504a176a6126a).
+There was still some discussion about whether the test case is valid but it
+sounds like it [is supposed to work](http://www.mail-archive.com/netdev@vger.kernel.org/msg124654.html).
+
+Lessons here: reduce your test cases, bisection is still fantastic, and hacks
+are what you get for being lazy.

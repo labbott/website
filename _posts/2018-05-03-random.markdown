@@ -1,0 +1,67 @@
+---
+layout: post
+date: 2018/05/03 11:00:00
+title: Some notes on recent random numbers
+category: fedora
+---
+By now people may have seen complaints of [boot slowdown](https://fedoraproject.org/wiki/Common_F28_bugs#Core_system_issues)
+on newer kernels. I want to explain a little more about what's going on and
+why Fedora seems to be particularly hard hit.
+
+The Linux kernel has a random number generator in `drivers/char/random.c`. This
+provides several interfaces for random numbers to the system. There are two
+main interfaces for random numbers: `/dev/random` and `/dev/urandom`.
+`/dev/random` is designed to be "secure", meaning it is sufficiently random
+that it can be used for things like cryptography keys. `/dev/urandom` is
+"random" in the sense that most humans won't detect a pattern but sufficient
+mathematical analysis might find a weakness.
+
+Random number generators rely on entropy to work properly. You can't just
+[make up](https://xkcd.com/221/) entropy, the system has to get it from
+somewhere. At boot the kernel assumes it has no entropy and relies on various
+parts of the system (interrupts, timer ticks etc.) to give it entropy.
+`/dev/random` is supposed to block if there is not sufficient entropy in the
+system (entropy is a finite resource and it can be drained). Google Project 0
+recently discovered [several flaws](https://bugs.chromium.org/p/project-zero/issues/detail?id=1559)
+in the Linux RNG, among them that the RNG was marked as being available for
+cyptographically secure generation earlier than it should have. They provided
+patches to fix this which were applied by the RNG maintainer.
+
+And then people started seeing [issues](https://marc.info/?l=linux-kernel&m=152457053105055&w=2),
+mostly a lot of messages about `crng_init`. It turns out, there were a lot of
+places in the kernel that were trying to get random numbers early in the kernel
+boot process that weren't as random as they might expect. Fedora had a
+particularly nasty problem where the compose machines were getting stuck.
+Trying to get more logs from the systemd journal didn't help. Eventually after
+some debugging with the infrasturcture team (and the help of `sendkey alt-sysrq-
+t` in the qemu monitor window), we were able to see that init was blocked
+on the `getrandom` systemcall for secure entropy. Interestingly enough, systemd
+only made non-blocking (insecure) random calls in its code.
+
+I was lucky I could re-build kernels to reproduce the issue, so I decided to
+experiment a bit and return something unexpected from getrandom (`-ENOMEM`).
+This gave me an error message that (luckily) uniquely mapped to gcrypt.
+systemd links against gcrypt for some features, such as calculating an HMAC
+for the journal entries. None of that involved random numbers at bootup though
+so it didn't explain why things were getting stuck. After some more back and
+forth, Patrick Uiterwijk found a [patch](https://src.fedoraproject.org/rpms/libgcrypt/blob/master/f/libgcrypt-1.6.2-fips-ctor.patch)
+that gcrypt was carrying. If [FIPS](https://en.wikipedia.org/wiki/FIPS_140-2)
+mode is enabled, the cryptographic system is initalied at constructor time
+(i.e. when it gets loaded by systemd). It turns out, the default images
+ship with `dracut-fips` which will put gcrypt into FIPS mode. So the very first
+time systemd went to open the journal to write something, it would load gcrypt
+which would attempt to initialize the random number system. (Fun fact, it
+also looks like the default in systemd is to do a write to a journal before
+the commandline options are parsed. So even adding an option to not write to
+the journal didn't help this case. I might be wrong here though?)
+
+Despite the fact that these patches have some side-effects, they do fix
+a real issue and can't exactly just permanently reverted. So what to do? One
+easy answer is to give the system more entropy. On virtualized systems, this
+can be provided by the `CONFIG_HW_RANDOM_VIRTIO` option. Part of the fix also
+involves making sure userspace isn't actually trying to rely on secure random
+number generation too early since randomness is hard to come by early in
+boot. At least for now in Fedora, we've temporarily reverted the random series
+on stable (F27/F28) releases. The plan is to continue working with upstream
+and userspace developers to find a workable solution and bring back the
+patches when things are fixed.

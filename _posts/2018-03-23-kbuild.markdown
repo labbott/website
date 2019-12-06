@@ -1,0 +1,43 @@
+---
+layout: post
+date: 2018/03/23 11:00:00
+title: Kbuild tricks
+category: fedora
+---
+Several of the tasks I've worked on recently have involved looking at some
+of the kernel's build infrastructure. This is all fairly well
+[documented](https://git.kernel.org/pub/scm/linux/kernel/git/torvalds/linux.git/tree/Documentation/kbuild)
+which makes it nice to work with.
+
+The kernel automatically generates some files at build time. This is mostly
+set up to be transparent to developers unless they are looking for them.
+The majority of these files are headers at `include/generated`. A good example
+of something which needs to be generated is the `#define` representing the
+kernel version (e.g. 4.15.12). The header file `include/generated/bounds.h`
+contains `#defines` for several enum constants calculated at build time.
+Cleverly, most of these files are only actually replaced if the generated
+output changes to avoid unnecessary recompile. Most of this work is handled
+by the `filechk` [macro](https://git.kernel.org/pub/scm/linux/kernel/git/torvalds/linux.git/tree/scripts/Kbuild.include#n42).
+
+The C preprocessor is typically used on C files, as one might obviously expect.
+It's not actually limited to C files though. Each architecture has to define
+a linker script which meets the architectural requirements. The linker language
+is common across architectures so it's beneficial to have common definitions
+for typical sections such as initcalls and rodata. There's a global
+[rule](https://git.kernel.org/pub/scm/linux/kernel/git/torvalds/linux.git/tree/Documentation/kbuild/makefiles.txt#n1190)
+to run the pre-processor on any `.lds.S` file. Devicetree files also get
+preprocessed which avoids a lot of copy and pasting of numerical defines. 
+
+The compiler flags are typically set in the top level `Makefile` and named
+as you might expect (`CFLAGS`, `CXXFLAGS` etc.). The process of building the
+kernel requires building a number of smaller programs. The c flags for
+these programs are controlled by a different set of variables (`HOSTCFLAGS`).
+It sounds incredibly obvious but I've lost time from my day trying to figure
+out why setting options in `CFLAGS` weren't being picked up by the host
+compiler. For more fun, it's possible to use environment variables to set
+_different_ flags for compiling built-in vs. module code. The moral of
+the story is know what you're setting.
+
+Debugging build infrastructure isn't always pleasant but the kernel build
+system isn't too bad overall. I'm at least beginning to understand more parts
+of it as I find increasingly more obscure things to modify.

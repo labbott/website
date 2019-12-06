@@ -1,0 +1,58 @@
+---
+layout: post
+date: 2018/04/26 11:00:00
+title: LSF/MM 2018
+category: fedora
+---
+Wheee LSF/MM. Highlights.
+
+- There were a couple of sessions related to everyone's favorite mitigation,
+PTI. Unsurprisingly, PTI has an impact on I/O heavy workloads because it makes
+system calls more expensive. Minimizing system calls has always been good
+performance advice, and it only becomes more important with PTI. Also important
+is to make sure features like the vDSO are used since that helps to mitigate
+the system call cost. There was some discussion about if we need new system
+calls that take vectors to help with TLB flushing costs (e.g. multiple
+`madvise` calls will require a flush each time).
+
+- Ted Ts'o gave a session on fs-verity. This is a file system feature for
+file integrity that's mostly been focused on Android. The functionality is
+similar to what IMA wants to provides but focuses on immutable files. Looks
+promising.
+
+- Speaking of IMA, Mimi Zohar gave a presentation on IMA with a focus on file
+system topics. The goal of IMA is to provide cryptographic verification of
+files with keys tied to the TPM. The nature of this means it ends up touching
+file system internals and some things it perhaps shouldn't (e.g. file system
+magic numbers). There's been good progress towards making IMA more acceptable
+toward everyone.
+
+- Igor Stoppa talked about protectable dynamic memory (called pmalloc). The
+goal is to allow read only protection of memory that can't be statically
+allocated. This is a patch series I've been reviewing/following for some time
+now. Overall, feedback seemed promising for it to get merged soon.
+
+- I talked briefly about CMA (my primary reason for attending). CMA relies on
+alignment to pageblock size since it is tied to migration. On arm64 with 64K
+pages, the pageblock size gets bumped to 512MB which is a bit much. I discussed
+some approaches to loosening that requirements. The two big options are either
+just make the pageblock size smaller if we aren't using THP or just let CMA
+exist as a subpageblock region (some patches were recently merged by Joonsoo
+Kim to make this much easier). Both are plausible, now all I need to do is
+write the code (alas).
+
+- Matthew Wilcox talked about `struct page`. Kernel documentation has been
+notoriously lacking for internal APIs and structures. A `struct page` exists
+for each page of memory on the system which means it needs to be compact as
+possible. The end result is a difficult to understand structure. Matthew
+proposed re-arraging the structure to better clarify the actual usage and make
+it clear what fields of the structure outside users could actually use. It
+seemed to be well received so I expect to see it on the mailing list sometime.
+
+- I got a chance to chat with some Red Hat people about [dm-vdo](https://github.com/dm-vdo).
+I had seen this discussed internally somewhat before but the hallway track
+provided a much better explanation to me of both the details of the code and
+some of the potential pitfalls. The hallway track is always great.
+
+[LWN](http://www.lwn.net) already has some coverage up but watch there for
+much better details on all the sessions.

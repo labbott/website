@@ -1,0 +1,46 @@
+---
+layout: post
+date: 2016/08/08 11:00:00
+title: Flock 2016
+category: fedora
+---
+The annual [Flock](http://www.flocktofedora.org) was held last week in Poland.
+This year was much busier for me than [last year](http://www.labbott.name/blog/2015/08/17/flock-2015-and-being-new-in-town/).
+I've been on the team for well over a year now (my how time flies!) so I was
+more involved with everything.
+
+I gave the annual kernel talk. This was mostly a status report/update. If
+you've been to Flock in the past, this talk will seem very familiar. One item
+I tried to emphasize this year was that we really wanted to get more people
+involved. Our policy is still 'go upstream' but we still want to build an
+active Fedora community of kernel participants as well. The distro is probably
+going to be most users first interaction with the kernel and we want the best
+experience possible. The [slides](https://labbott.fedorapeople.org/FedoraKernelFlock2016.pdf)
+are super boring but you can read them if you want.
+
+I also did a workshop on building the kernel. This was designed to walk people
+through building a kernel and applying patches to the kernel. There were a
+handful of people in the room but everyone was engaged and asked great
+questions. I learned about `dnf builddep` for installing requirements and we
+corrected a problem with the dependencies as well. Overall it was a good use
+of a workshop slot.
+
+During the Q/A portion of the kernel talk and afterwards, I got a lot of
+questions about getting started contributing to the kernel. A common theme was
+"Oh yeah! I always wanted to do kernel things but I don't know how to get
+started". I decided to do a lightning talk about first steps. Getting started
+in the kernel is an open problem the community is still working on. My
+suggestions included [kernel newbies](https://kernelnewbies.org/FirstKernelPatch) and the [eudyptula challenge](http://eudyptula-challenge.org/).
+Writing up a longer post on this is on my TODO list.
+
+Apart from times where I was talking, I went to a handful of other talks. I
+attended several sessions about diversity and community building. I'm happy to
+see the Fedora community having these conversations and I hope to see more in
+the future. Peter Robinson gave the usual state of Fedora ARM. The most
+significant news was the [redefintion of primary and secondary architectures](https://lists.fedoraproject.org/archives/list/devel@lists.fedoraproject.org/thread/3BO5E2XZ2D7BHK7GQXZB5S37AQIUN6YP/).
+Discussion about this has been happening for a while so it's good to see this
+make forward progress to give arm64 a much needed bump.
+
+I did a bunch of hallway track. Still my favorite track. I'm still terrible at
+putting faces to names but I like meeting people. Thanks to all the Flock
+organizers who put together a great conference.

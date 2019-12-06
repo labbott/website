@@ -1,0 +1,95 @@
+---
+layout: post
+date: 2017/10/30 11:00:00
+title: OSS/Ksummit 2017
+category: fedora
+---
+Last week was kernel summit in Prague. Based on feedback from Linus and other
+people, kernel summit was a 2 day open technical forum along with a half-day
+"maintainer summit". [Open Source Summit Europe](http://events.linuxfoundation.org/events/open-source-summit-europe)
+was also happening at the same time and I attended somethings there as well.
+
+Darren Hart gave a talk about [x86 platform drivers](https://schd.ws/hosted_files/osseu17/47/pdx86-oss-prague-2017-002.pdf).
+Darren is the current maintainer of the x86 platform drivers. He gave a nice
+overview of what a platform driver actually is (a bunch of glue) and some
+history about how big or small drivers can be. One of the sticking points about
+drivers in general is that most hardware vendors only really focus on Windows
+and the driver philosophy there is different from Linux. This results in Linux
+needing to play catch-up and work around firmware that was only tested on
+Windows (see also the example of vendor "To be filled by O.E.M."). Hardware
+vendors can make this easier by using standard interfaces and also open
+sourcing firmware, something the Fedora community cares deeply about.
+
+Laurent Pinchart ran a session called "Bash the Kernel Maintainers". This was
+designed to be a feedback session for attendees to express opinions about the
+kernel process. Most of the feedback was things I've heard before (and even
+expressed myself). Submitting patches as a new user is still intimidating.
+There was some discussion about making it easier for users to access the
+zeroday bot without having to submit something publicly. The topic of bots
+reminded me of some of the themes I heard when I was at
+[maintainerati](http://www.labbott.name/blog/2017/02/20/maintainerati/).
+The complete lack of consistency among maintainers was a big theme. There is
+no one rule about where to send a patch or when to ping a maintainer for a
+review or even how to get status about a patch. This is still one of my pet
+peeves as a full time kernel developer. Laurent took great notes and gave a
+readout at the kernel maintainer's summit.
+
+For the first day of kernel summit, Steven Rostedt and Mathieu Desnoyers talked
+about the tracing ABI. The kernel has a (reasonably) consistent rule that
+userspace is an ABI and you do not break userspace. This makes sense for things
+like traditionally compiled userspace programs and syscalls. The tracing
+infrastructure in tree has grown over the years which has made debugging much
+easier. If that tracing infrastructure gets exposed to userspace though, it
+might end up looking like an ABI, which means that if tracepoints get changed
+or removed tools that depend on it might break. The presenters argued that
+even if it is an ABI, tools developers were perfectly willing to recompile
+on each kernel version to match. Linus disagreed. LWN did a much more complete
+[writeup](https://lwn.net/Articles/737530/) of the topic.
+
+Peter Robinson and Jim Perrin ran a BOF on the state of ARM on Fedora. This
+was mostly a brief status update (Fedora rocks) with time to ask questions.
+People were mostly interested in device support so there was some discussion
+and explanation about what is required to support these things in Fedora
+(reasonable mainline graphics support). Great session.
+
+The kernel Outreachy interns each gave [presentations](https://osseu17.sched.com/event/BxJM/panel-discussion-outreachy-kernel-internship-report-moderated-by-julia-lawall-inria)
+on what they worked on. There were six different projects across the kernel,
+from documentation to IIO. I always enjoy hearing Outreachy interns talk about
+what they accomplished. For many of them, this was their first contribution to
+open source or even kernel programming. Outreachy is a fantastic program and
+it shows what can be accomplished with a supportive mentor.
+
+Thorsten Leemhuis gave a presentation on kernel regression tracking. There had
+not been anyone keeping track of regressions in the kernel for years until
+Thorsten picked up the task earlier this year. It's a very valuable but
+thankless job. Thorsten talked about some of the difficulties including getting
+people to actually send him regressions and how to keep track of what he did
+find. There was talk of creating a regressions@ mailing list which should
+hopefully make reporting easier. The topic of bugzilla came up once again and
+it sounded like there was agreement to improve the landing page to make bug
+reporting more easier. As a Fedora maintainer, regressions are near and dear to
+my heart so I plan on keeping an eye on this.
+
+Konstantin Ryabitsev, a sysadmin for kernel.org, gave a presentation on
+[security hygiene](https://mricon.com/talks/osseu17.pdf). The intended
+audience was kernel developers but everything applies to developers in general.
+PGP is still the
+most widely used mechanism out there and the kernel community relies on it for
+trust. Linus signs all releases as does Greg KH for the stable releases. There
+was some discussion about the trust in git pull requests and how much signing
+should actually be happening. Konstantin is a big promoter of hardware tokens
+for storing your subkeys. I have a yubikey but haven't made much use of it
+(and apparently need to update my keys thanks to the latest [flaw](https://arstechnica.com/information-technology/2017/10/crypto-failure-cripples-millions-of-high-security-keys-750k-estonian-ids/)).
+I really enjoyed this talk mostly because the security suggestions were very
+practical, even if they did acknowledge that some problems like video
+conferencing were still insecure. I'll be reimaging my laptop soon so I'll
+hopefully be able to implement some of the suggestions.
+
+The maintainer's summit was a half-day even closer to what the kernel summit
+used to be. This was the first time the new format was used and overall it
+went well. There were only about 30 of us which made discussions much easier,
+especially on topics like regression tracking and maintainer bashing. All the
+discussion felt productive and I think we made useful progress. I expect LWN
+to have a more complete writeup in the near future.
+
+Once again, a great conference in a great city. I love Prague.

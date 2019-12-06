@@ -1,0 +1,94 @@
+---
+layout: post
+date: 2017/02/02 11:00:00
+title: DevConf 2017
+category: fedora
+---
+Last week was [DevConf](https://www.devconf.cz) in Brno, Czech Republic. I
+was there!
+
+Thorsten Leemhuis gave a talk about [What's up in Kernel Land](https://www.youtube.com/watch?v=bMgl8C3W-2I).
+This was a general overview about new features and patches that are coming
+into the Linux kernel targeted at non-kernel developers. I was not the target
+audience but the talk was fantastic. It was easy to follow and gave a good
+picture of what the kernel community is doing. I appreciate when non-kernel
+developers give talks about the kernel since kernel developers can be a bit
+myopic in our topics (myself included).
+
+Peter Jones talked about [Firmware updates on Linux](https://www.youtube.com/watch?v=4UiT139Ma0c).
+So long as there has been firmware, there have been firmware bugs. Fixing those
+bugs involves giving updates. Recent updates to the UEFI firmware specification
+make it plausible to give firmware updates directly from Linux. This talk
+described the work to make these Firmware updates actually happen and even
+included a live demo that did not brick a machine. Having a reliable way to
+get firwmare updates without needing to boot into Windows is very helpful for
+improving the overall Linux experience.
+
+There was a talk about [performance tuning of RHEL](https://www.youtube.com/watch?v=NWmF4TBXzLM).
+Most of this was about various userspace knobs that can be set depending on
+your workload to control aspects like NUMA affinity and page writeback. I've
+worked enough in the memory management area to know how must of the underlying
+technology works. This talk was useful in showing how to practically make use
+of these features to improve your system. Having more knowledge available to
+help with performance issues is always beneficial as a developer.
+
+In a similar theme, there was a talk about [solving memory performance problems](https://www.youtube.com/watch?v=cKp7jR9QGCgA).
+This primarily focused on using the perf tool to find and fix cache performance
+problems. The primary example was variables that are sharing a single cache
+line. Intel has added new hardware features to make it possible to aggregate
+cache data and figure out where cache conflicts are occurring. Cache issues can
+be a pain to solve so it's great to see perf making this a little easier.
+Hopefully other architectures will get similar hardware support and integration.
+
+Paul More gave a talk on [Lessons from the CII Badge Program](https://www.youtube.com/watch?v=sAYwOeUtDzU).
+The [Core Infrastructure Initiative (CII)](https://www.coreinfrastructure.org/)
+came out of the Heartbleed security issue to make the software we rely on
+more secure. As part of this, the CII has a 'badge' program of best practices
+for open source software. These practices are less "don't write buffer
+overflows" and more "are you using source control". The example in the talk
+was how well libseccomp complied with the best practices. Overall, libseccomp
+had good compliance with a few areas to improve. None of the requirements are
+overly burdensome but they are important for project sustainability.
+
+Peter Robinson gave a talk about [architecting a secure IoT platform using
+Fedora](https://www.youtube.com/watch?v=1SJmHmcB07Y). This was mostly an update
+on his work driving IoT for Fedora. The goal is to pick several devices and
+use them as a reference platform for IoT gateways (machine to hook up to tiny
+IoT devices). Part of this work is to make sure that Fedora doesn't become the
+punchline of any IoT jokes so there was a big emphasis on security and what
+work needs to happen there. I look forward to seeing Fedora used in this
+buzzword filled space.
+
+There's a new effort underway to [make Fedora run better on laptops](https://www.youtube.com/watch?v=BlpxRIDvbLs)
+within Red Hat and this talk described that effort. The focus is going to be
+on enabling and testing specific laptops to make sure they work well with
+Fedora. A big reason bugs go unfixed is because nobody has the time
+to work on them. Having dedicated people to work on this problem is a huge step
+in the right direction. Part of this work is also things like making the nVidia
+driver more usable. Philosophically, I have misgivings about the nv driver but
+from a usability perspective this is a great effort. This was a nice tie in to
+a talk about Fedora Workstation on the last day (unfortunately the talk didn't
+get recorded).
+
+Rawhide recently brought in gcc7 and the kernel hit a bit of a [snag](https://marc.info/?l=linux-kernel&m=148605874830668&w=2)
+so I was eager to see the talk about [cool new gcc7 features](https://www.youtube.com/watch?v=KR2ZQ01kKqc).
+The talk started out explaining `-Wimplicit-fallthrough` which is designed to
+catch fall through in switch cases. Of course, sometimes you actually want this
+behavior so the 'solution' is to look for comments like `/* fallthrough */`.
+I am not sold on this technique but I can take comfort in the fact that there
+is a very long thread somewhere debating this. I don't know where it is, but I
+am sufficiently convinced that it exists and I don't want to read it. Most of
+the rest of the talk was describing other warnings and features, none of which
+were quite as controversial (although the talk did digress into C++
+specification discussion for a bit). It's always good to see the compiler
+improving to make programming better.
+
+There does exist a video of my talk about [fresh kernels with Fedora](https://www.youtube.com/watch?v=pQk_CwaVib4).
+This was an overview of how the upstream kernel release process works and how
+that drivers a lot of the rebase decisions we make in Fedora. Overall, I was
+pretty satisfied with how the talk went. I got some good questions and people
+seemed engaged. I might see about tweaking this talk to give elsewhere.
+
+This was my first time at DevConf and in Brno and I had a fantastic time. There
+was some hallway track and lots of good times talking with people. Hopefully
+I'll get a chance to go back again.

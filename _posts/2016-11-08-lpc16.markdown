@@ -1,0 +1,88 @@
+---
+layout: post
+date: 2016/11/08 11:00:00
+title: Kernel Summit + Linux Plumbers 2016
+category: fedora
+---
+Last week was the annual kernel summit and [Linux Plumbers Conference](https://www.linuxplumbersconf.org/2016/)
+in Santa Fe, NM. Like other conferences, this involved a bunch of scheduled
+talks and lots of hallway track (and plenty of Mexican food).
+
+- Monday was the invite only kernel summit. The morning was mostly process
+talks. I brought up some discussion about the kernel.org bugzilla, mainly that
+it is inconsistently used. The kernel is heavily biased towards e-mail and
+anything that isn't e-mail tends to get ignored/used very begrudingly and
+bugzilla is no exception. The power management maintainers really like the
+bugzilla and actually respond, most other maintainers do not. This is the
+problem: users who file a bug don't know whether to expect a reponse. I
+generally discourage the use of the kernel.org bugzilla. The kernel.org
+bugzilla will be getting an update soon so we'll see what happens after that.
+[LWN](http://www.lwn.net) has better summaries of all the kernel summit stuff
+than I can give.
+
+- Paul McKenney gave a talk about a formal model for memory ordering. The
+kernel has a [document](https://git.kernel.org/cgit/linux/kernel/git/torvalds/linux.git/tree/Documentation/memory-barriers.txt)
+which explains how memory barriers and the like should be used in the kernel.
+Despite the fact that this document says it is not a specification, it gets
+treated like one. Several researchers have been working on actually formalizing
+this document to be able to give an answer whether certain sequences of code
+will work correctly. This doesn't have many day-to-day benefits for most kernel
+developers but the work is very important from a research stand point.
+
+- A bunch of people sat down for a meeting about what to do about the secure
+boot patches. All the major distros are now carrying some form of the patches
+so it makes sense to converge on one solution. This was a very productive
+discussion and there is a much better path forward for those patches.
+
+- There were several different MM sessions. Johannes Weiner spent a lot of time
+talking about process thrashing. The current OOM killer does not do a great
+job of detecting when processes are thrashing so processes may continue to
+run instead of being OOM killed. He brain stormed some better ways to detect
+these conditions, such as checking how frequently pages are being re-faulted.
+Several people (including me) brought up some issues with the SLUB allocator.
+The SLUB slow path is pretty slow ('glacial path' was the phrase used). SUSE
+still uses the SLAB allocator but is looking at work to improve SLUB for
+their needs.
+
+- There was a mini conference about FPGA/Reprogrammable Logic Devices. There's
+a growing interest in supporting FPGAs in the kernel as regular devices. Vendors
+like Altera and Xilinx have been slowly adding support. There was a lot of
+talk about standards which lead to a discussion about ACPI vs Devicetree for
+the one billionth time. FPGAs are useful across the board from the embedded
+world to servers so getting everyone on the same page is important. Lots of
+new and interesting work.
+
+- As part of the testing/fuzzing microconference, some developers from Google
+talked about their tool Syzkaller. This is a more directed fuzzing tool which
+tries to be slighltly more clever than random for generating system call
+inputs and also generate share the program that caused the crash. Part of
+this discussion led to a session on formalizing system calls. The goal was
+to have specifications generated automatically for tools and possibly man
+pages. There were some tentative conclusions reached so we'll see what happens
+in the future.
+
+- I gave a talk/rant about Ion at the Android microconferece. Ion has gotten
+enough push back that I don't think it will ever be merged in its current form.
+I called for a moratorium on new features to the existing architecture and to
+work towards a new architecture that might be more acceptable by the community.
+If we ignore the community aspects, Ion is an acceptable framework for Android.
+Keeping major frameworks out of tree is not great for the Android ecosystem
+so it really really really needs to be in tree and out of staging. I had some
+good discussions and the DRM Graphics people seem to be very willing to
+help shepard things along. This just leaves me doing actual work and not just
+complaining. The hardest task.
+
+- Lennart Poettering gave a talk about 'portable system services' which is
+basically systemd services in something like a container. The concept is needed
+but I remain skeptical about the idea of doing `systemctl start
+http://my-completely-trusted-server/service.icb` to run services from anywhere.
+This will be something to watch as it comes into Fedora.
+
+- kdbus was rejected as an approach sometime last year and the developers
+decided to start from scratch with a proposal for Bus1. They gave a very nice
+talk discussion the existing IPC mechanisms and some of the trade offs with
+each and then described their new Bus1 approach. It seemed to be reasonably
+well received and it wasn't just a blind port of another possibly broken IPC
+mechanism.
+
+Once again, a great but very busy conference with tasks to follow up on.

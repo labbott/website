@@ -1,0 +1,82 @@
+---
+layout: post
+date: 2018/02/05 11:00:00
+title: DevConf 2018
+category: fedora
+---
+[DevConf 2018](https://devconf.cz/cz/2018) happened. A grand time was had by
+me (and hopefully others)
+
+Robbie Harwood gave an overview of [Kerberos for Developers](https://www.youtube.com/watch?v=XFZ69r5QXKA).
+Kerberos has a reputation for being difficult to use and manage. As far as I
+can tell, maintaining a server can still be tricky but using it as a developer
+has improved significantly. There are several libraries available, including
+bindings in python which were demoed. Although I don't do much with Kerberos
+applications usually, it's good to know there are easy to use APIs available.
+
+There was a joint presentation on [Hardware Root of Trust](https://www.youtube.com/watch?v=WpBQKT9m4dQ).
+This was an overview of current TPM support. TPMs have historically been
+somewhat controversial as they have been associated with reducing user freedom.
+TPMs are also very good at providing a secure way to store keys for protecting
+data, which was much of the focus of the talk. There's been ongoing work to make
+TPMs do [useful](https://blog.dowhile0.org/author/jmartinezc/) things such
+as disk encryption. The TPM software support has come a long way and I look
+forward to seeing new uses.
+
+Ulrich Drepper gave a talk on [processor architectures](https://www.youtube.com/watch?v=InLQCcPt7Uo).
+This seemed very timely given the recent speculative execution shenanigans.
+There was a lot of focus on the existing Intel architecture and its
+limitations. We're beginning to hit physical limits to increase speed (see
+the slides about memory power use). As processor architectures get more
+complex, compilers and programmers have to improve as well. Sometimes I do
+miss working with hardware (until it breaks of course).
+
+Don Zickus talked about some ongoing [Kernel CI](https://www.youtube.com/watch?v=UYBu13CBmo8) work.
+The upstream kernel project has had some level of continuous integration (CI)
+for a while now. One of the best known efforts is Intel [0-day](https://01.org/lkp/documentation/0-day-test-service)
+testing. Don talked about why Red Hat is interested in supporting something
+similar for upstream patches (it's easier to prevent buggy patches from being
+merged than to fix them later!). I've been following this project for a while
+now and look forward to see it come to fruition in the near future.
+
+Randy Barlow and Patrick Uiterwijk talked about [rebuilding containers](https://www.youtube.com/watch?v=mqY-r-mU1To).
+This seems like a task that's very easy (You just rebuild them right?) but it
+turns out to be difficult to coordinate across the entire project. They talked
+about an abandoned approach and the current method using buildroot overrides.
+
+Several members of the Fedora council ran a [Fedora panel](https://www.youtube.com/watch?v=HCrIoKgalic).
+This was an open QA session and all the panelists gave thoughtful answers
+to questions (as you'd expect). The video is worth watching to see the topics
+covered.
+
+Thorsten Leemhuis talked about [regressions](https://www.youtube.com/watch?v=kl4kum3O5sI)
+in the Linux kernel. This is a task he's picked up [somewhat recently](https://lwn.net/Articles/738216/)
+and is important to me as both a kernel developer and a distro maintainer. His
+talk emphasized why users are so important to regression tracking and the
+basics of such work. This was a very good reference and I hope to link to it
+in the future.
+
+There was a talk about [out-of-tree modules](https://www.youtube.com/watch?v=eAffQYvDrt4).
+Fedora has a policy of not shipping out of tree modules mostly for practical
+reasons. Sometimes users have reasons for wanting to use out of tree modules
+though and they are free to do so. The biggest issue tends to be keeping the
+external module in sync with the tree. The talk covered ways maintainers can
+keep modules in sync as well as methods for users to rebuild (akmods etc.).
+Having good information on out of tree modules is important for those users
+who want/need them.
+
+Transitioning packages from python2 to python3 is ongoing. There was a talk
+about some of this [work](https://www.youtube.com/watch?v=E2retZzzVVA).
+It's easy to get supposedly simple changes like a name change wrong. I don't
+have nearly as much experience with packaging as some people so this was a
+nice review of packaging in addition to a good set of lessons learned.
+
+Patrick Uiterwijk talked about [autosigning](https://www.youtube.com/watch?v=0UaOSmMf1LM).
+Users rely on digital signatures to provide some level of trust on the packages
+they get from Fedora. Much of the signing work use to be done manually by
+humans who are prone to human failures. Patrick and others have worked hard
+over the last year to have more signing happen automatically. This talk was a
+nice overview of Fedora root of trust and a discussion of what exactly it takes
+to keep that trust.
+
+I had a good time meeting everyone and look forward to another DevConf.

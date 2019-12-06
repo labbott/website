@@ -1,0 +1,124 @@
+---
+layout: post
+date: 2018/09/06 11:00:00
+title: LSS/OSS NA 2018
+category: fedora
+---
+Last week was [Open Source Summit](https://events.linuxfoundation.org/events/open-source-summit-north-america-2018/)
+and [Linux Security Summit](https://events.linuxfoundation.org/events/linux-security-summit-north-america-2018/)
+in beautiful Vancouver, BC. Highlights:
+
+- There was a talk on security in Zephyr and Fuchsia. While the focus of the
+conference is Linux, there's a growing interest in running Linux in conjunction
+with processors running other operating systems. [Zephyr](https://www.zephyrproject.org/)
+is an open source RTOS targeted at processors with a smaller footprint than
+Linux. Most of the security improvements have been adding features to take
+advantage of the MMU/MPU. One of those features was userspace support, which
+is always a bit of a surprise to hear as a new feature. Fuchsia is Google's
+new microkernel operating system. There's some [argument](http://ts.data61.csiro.au/publications/csiro_full_text/Biggs_LH_18.pdf)
+that microkernels offer more security than Linux since more parts can
+run in userspace. Much of the talk was about the resource and namespace
+model. There's been a good deal of work put into this but it was noted
+much of this is still likely to be reworked.
+
+- Kees Cook talked about how to make C less dangerous. I've seen bits
+and pieces of this talk before and LWN did a great [writeup](https://lwn.net/Articles/763641/)
+so I won't rehash it all. This did spawn a [thread](https://lore.kernel.org/lkml/1535875700.17858.3.camel@med.uni-goettingen.de/T/#u)
+about how exactly VLAs are or aren't security issues.
+
+- Someone from Microsoft talked about Azure Sphere. Azure Sphere is
+Microsoft's attempt at an IoT based microprocessor that runs
+Linux. The real challenge is that the device has 4MB. The talk
+focused on what kinds of optimizations they had to do to get it
+to run in that space. There's been similar attempts before but
+4MB is still incredibly impressive. I'll be keeping an eye
+out when the patches go upstream (and maybe buy a device).
+
+- Two people from the Android security team at Google gave a talk
+about the state of things there. Much of the talk was numbers
+was numbers and statistics. Standard recommendations
+such as "reduce your attack surface" and "use SELinux" are very
+effective at reducing the severity of bugs. Bounds checks were
+a very common root cause. It turns out, copy_*_user APIs are
+easy to get wrong. Features such as `CONFIG_HARDENED_USERCOPY`
+are very effective here (there was an all too familiar story
+about "well if I turn on hardened usercopy my tests don't pass").
+The Android security team does great work and it's good to
+see the data.
+
+- Alexander Popov gave a talk on his experience in upstreaming
+the stackleak plugin. This is a gcc plugin that's designed to
+clear the stack after every system call to reduce the chance
+of information leak. The talk covered the history of development
+from separating the plugin from grsecurity to its current form.
+Like many stories of contributing, this one was not easy. It
+took many iterations and has been dismissed by Linus. As of
+this writing it still hasn't been pulled in and I hope it gets
+taken in soon.
+
+- Greg KH ~~generated headlines~~ talked about Spectre and Meltdown
+response in the kernel. The most interesting part of the talk
+was outlining the time frame of when various parts got fixed.
+Also important was the discussion of stable kernels and pointing
+out that backporting is a huge pain.
+
+- Sasha Levin and Julia Lawall talked about using machine learning
+on stable trees. The current system for getting fixes into stable
+trees relies on a combination of maintainers and developers
+realizing a fix should go in. This leads to many fixes that could
+be useful not actually making it in. The new idea is to use
+machine learning to figure out what patches might be appropriate
+for stable. Like all machine learning work, it's not perfect
+but it's found a number of patches. Sasha has also done a lot
+of analysis on the stable trees and buggy patches (it turns
+out patches that come later in the -rc cycle are more likely
+to be buggy) so this work is overall beneficial to the kernel.
+I for one welcome our new bot maintainers.
+
+- Julia Cartwright talked about the state of the RT patches.
+These patches have been out of tree for a very long time and
+have been slowly getting merged. The good news is there may
+be a light at the end of the tunnel thanks to a renewed
+effort. The current patch set is a manageable size and the
+current work can be explained in a few slides. She also
+mentioned the RT group can always use more people to get
+involved for anyone who is interested in fun projects.
+
+- Casey Schaufler discussed the trade offs in kernel hardening.
+Security is often a trade off for some other aspect of system
+performance (speed, memory). Security is also harder to
+quantify vs. "it goes 20% faster". Casey talked about some
+examples similar to Kees of APIs that need to be corrected
+and problems with getting things merged. Ultimately, we
+are going to have to figure out how to make security work.
+
+- Amye Scarvada gave a talk about "rebooting a project"
+but it was really a short workshop on a method of how
+to do planning. The target audience was community managers
+but I found it really useful for any project. She talked
+about things like short and near term goals and determining
+external vs internal and technical vs non techcnical problems.
+Really helpful for framing problems.
+
+- Jim Perrin talked about making a move from engineering
+to management. I've seen various people talk about this
+before and the most important point to remember is that
+management is not a "promotion", it is a different track
+and set of skills than engineering. You need to learn and
+develop those skills. He gave some good examples of what
+he had to figure out and learn. He emphasized that you
+should not go into management unless you really want to.
+Once again, really good advice.
+
+- There was a panel discussion about writing for your career.
+All the the panelists work in open source and writing in some
+fashion and encouraged everyone to write. Much of the discussion
+was about how to work with professional editors and common
+pitfalls people make when writing. Having a clear point to
+your writing is important and makes writing easier (something I've certainly
+found when trying to blog). You also don't write a book to get rich. I
+appreciated the insight from all the panelists and have some more ideas
+for my own writing.
+
+A big thank you to the organizers for giving
+me a chance to look at [actual penguins](https://twitter.com/openlabbott/status/1034992192580870144)

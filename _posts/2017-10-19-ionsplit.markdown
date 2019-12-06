@@ -1,0 +1,48 @@
+---
+layout: post
+date: 2017/10/19 11:00:00
+title: Splitting the Ion heaps
+category: fedora
+---
+One of the requests before Ion moves out of staging is to split the `/dev`
+interface into multiple nodes. The way Ion allocation currently works is
+by calling ioctls on `/dev/ion`. This certainly works but requires that Ion
+have a fairly permissive set of privileges. There's not an easy[^1] way to
+restrict access to certain heaps. Splitting access out into `/dev/ion0`,
+`/dev/ion1` etc. makes it possible to set Unix and selinux permissions per
+heap. Benjamin Gaignard has been working on some [proposals](https://marc.info/?l=linux-kernel&m=150651845126350&w=2)
+to make this work.
+
+I decided to give this a boot and run a few tests. Everything came up okay in
+my buildroot based environment but I didn't see `/dev/ion0, /dev/ion1` on
+my Android system. Creation of the device nodes is the responsibility of
+userspace so it wasn't too surprising to see at least some problems. On
+most systems, this is handled by some subset of [udev](https://en.wikipedia.org/wiki/Udev),
+which might be part of systemd or some other init subsystem. Android being
+Android uses its own setup for device initialization.
+
+My preferred Android board these days is a [HiKey](https://www.96boards.org/product/hikey/)
+development board. Linaro has done a fantastic job of getting support for this
+board in AOSP so I can work off of AOSP master or one of the branches to do
+development. By default, AOSP ships a binary kernel module based on whatever
+branch they are shipping but John Stultz keeps a [git tree](https://git.linaro.org/people/john.stultz/android-dev.git)
+with a branch that tracks mainline pretty closely. With this setup, I can
+recompile and test almost any part of the system I want (except for the Mali
+blobs of course).
+
+The Android init system provides an option to [log](https://android.googlesource.com/platform/system/core/+/master/init/uevent_listener.cpp#78)
+uevents. This was useful for seeing exactly what was going on. The logs showed
+the init system probing some typical set of the `/sys` hierarchy. The Ion
+nodes weren't on that list though, so the Android init system wasn't finding
+it in  `/sys`. This is what I found in `/sys/devices/` on my qemu setup:
+
+	# ls /sys/devices/
+	LNXSYSTM:00  ion0         msr          platform     software     tracepoint
+	breakpoint   ion1         pci0000:00   pnp0         system       virtual
+
+`ion0` and `ion1` are present in the `/sys` hierarchy but not where one might
+have expected. This was a side-effect of how the underlying devices were set
+up in the kernel. I'm not very familiar with the device model so I'm hoping
+to see more feedback on a proper solution. Progress always takes time...
+
+[^1]: You can do some filtering with seccomp but that's not the focus here.

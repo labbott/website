@@ -1,0 +1,83 @@
+---
+layout: post
+date: 2018/05/16 11:00:00
+title: Fantastic kernel patches and where to find them
+category: fedora
+---
+I've griped before about kernel development being scattered and spread about.
+A quick grep of MAINTAINERS shows over 200 git trees and even more mailing
+lists.
+Today's discussion is a partial enumeration of some common mailing lists, git
+trees and patchwork instances. You can certainly find some of this in
+the [MAINTAINERS](https://git.kernel.org/pub/scm/linux/kernel/git/torvalds/linux.git/tree/MAINTAINERS)
+file.
+
+- LKML. The main mailing list. This is the one everyone thinks of when they
+think 'kernel'. Really though, it mostly serves as an archive of everything
+at this point. I do not recommend e-mailing just LKML with no other lists or
+people. Sometimes you'll get a response but think of it more as writing to
+your blog that has 10 followers you've never met, 7 of which are bots. Or your
+twitter. There is a [patchwork](https://patchwork.kernel.org/project/LKML/list/)
+instance and various mail archives out there. I haven't found one I actually
+like as much as GMANE unfortunately. The closest corresponding git tree is the
+[master](https://git.kernel.org/pub/scm/linux/kernel/git/torvalds/linux.git/)
+where all releases happen.
+
+- The stable mailing list. This is where patches go to be picked up for stable
+releases. The stable release have a set of [rules](https://www.kernel.org/doc/html/latest/process/stable-kernel-rules.html)
+for how patches are picked up. Most important is that the patch must be in
+Linus' tree before it will be applied to stable. Greg KH is the main stable
+maintainer. He does a fantastic job for taking care of the large number of
+patches that come in. In general, if a patch is properly tagged for stable yes
+it will show up eventually. There is a tree for his
+[queue](https://git.kernel.org/pub/scm/linux/kernel/git/stable/stable-queue.git/)
+of patches to be applied along with [stable git trees](https://git.kernel.org/pub/scm/linux/kernel/git/stable/linux-stable.git/)
+
+- [Linux -next](https://marc.info/?l=linux-next). This is the closest thing
+to an integration tree right now. The goal is to find merge conflicts and bugs
+before they hit Linus' tree. All the work of merging trees is handled manually.
+Typically subsystem maintainers have a branch that's designated for -next which
+gets pulled in on a daily basis. Running -next is not usually recommended for
+anything more than "does this fix your problem" unless you are willing to
+actively report bugs. Running -next and learning how to report bugs is a
+great way to get involved though. There's a [tree](https://git.kernel.org/pub/scm/linux/kernel/git/next/linux-next.git/)
+with tags per day.
+
+- The -mm tree. This gets its name from memory management but really it's
+Andrew Morton's queue. Lots of odd fixes end up getting queued through here.
+Officially, this gets maintained with quilt. The tree for -next "mmotm" (mm of
+the moment) is available as a [series](http://www.ozlabs.org/~akpm/mmotm/).
+If you just want the memory management part of the tree, there's a [tree](https://git.kernel.org/pub/scm/linux/kernel/git/mhocko/mm.git/)
+available for that.
+
+- Networking. [netdev](https://marc.info/?l=linux-netdev) is the primary
+mailing list which covers everything from core networking infrastructure to
+drivers. And there's even a [patchwork](https://patchwork.ozlabs.org/project/netdev/list/)
+instance too! David Miller is the top level networking maintainer and has a
+[tree](https://git.kernel.org/pub/scm/linux/kernel/git/davem/net.git/)
+for all your networking needs. He has a separate [-next tree](https://git.kernel.org/pub/scm/linux/kernel/git/davem/net-next.git/).
+One thing to keep in mind is that networking patches are sent to stable in
+batches and not just tagged and picked up by Greg KH. This sometimes means a
+larger gap between when a patch lands in Linus' branch and when it gets into
+a stable release.
+
+- Fedora tree. Most of the git trees listed above are "source git/src-git"
+trees, meaning it's the actual source code. Fedora officially distributes
+everything in "pkg-git" form. If you look at the official Fedora kernel
+[repository](https://src.fedoraproject.org/rpms/kernel), you'll see it
+contains a bunch of patches and support files. This is similar to the -mm and
+-stable-queue. Josh Boyer (Fedora kernel maintainer emeritus) has some
+[scripts](https://pagure.io/fedkernel) to take the Fedora pkg-git and put it
+on [kernel.org](https://git.kernel.org/pub/scm/linux/kernel/git/jwboyer/fedora.git/).
+This gets updated automatically with each build.
+
+- DRM. This is for anything and everything related to graphics. Most everything
+is hosted a freedesktop.org, including the [mailing list](https://lists.freedesktop.org/archives/dri-devel/).
+Recently, DRM has switched to a group maintainer model (Daniel Vetter has
+[written](https://blog.ffwll.ch/2017/01/maintainers-dont-scale.html) about some
+of this philosophy before). Ultimately though, all the patches will come
+through the main [DRM git repo](https://cgit.freedesktop.org/drm/drm/). There's
+a [DRM -tip](https://cgit.freedesktop.org/drm/drm-tip/) for -next like testing
+of all the latest graphics work. Graphics maintainers may occasionally request
+you test that tree if you have graphics problems. There's also a
+[patchwork](https://patchwork.freedesktop.org/project/dri-devel/) instance.

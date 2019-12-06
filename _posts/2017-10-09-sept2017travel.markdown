@@ -1,0 +1,103 @@
+---
+layout: post
+date: 2017/10/09 11:00:00
+title: A few fall conferences
+category: fedora
+---
+At some point in time, I decided it was a good idea to attend three conferences
+in September. This was a busy but fairly productive month.
+
+Early September was Open Source Summit and Linux Plumbers Conference. Open
+Source Summit is the renamed LinuxCon. Matthew Garrett gave a talk about
+signing binaries with the Integrity Measurment Architecture (IMA) subsystem.
+This is a subsystem that ties hashes to the TPM module available on many
+modern systems. Two of the kernel Outreachy interns gave a talk on their
+projects involving the radix trees. I always enjoy listening to Outreachy
+interns talk about their projects and it sounded like they made good progress
+on improving the radix tree. Dawn Foster gave a talk on collaboration in
+kernel mailing lists. This was focusing on how kernel developers collaborate
+via e-mail. There were graphs showing the network via e-mail, which mostly
+showed that there are a handful of people who tend to e-mail each other
+frequently. This work was part of a PhD program so I look forward to seeing
+future work. Sarah Sharp gave a talk on code of conducts and enforcement.
+My favorite take away from this talk was thinking of code of conduct violations
+in terms of a threat model and what they mean for the well-being of your
+participants. I was also on the kernel panel with several other developers.
+This is usually a chance for people to come and ask questions about whatever
+kernel stuff. I didn't put my foot in my mouth so I consider it a success.
+
+I was on the planning committee for Linux Plumbers so I ended up doing a bunch
+of behinds the scenes work in addition to the hallway track and going to the
+occasional session. Jon Corbet gave a talk about the kernel's limits to
+growth. He gave a version of this talk at Linaro Connect and I gave some
+[thoughts](http://www.labbott.name/blog/2017/04/03/complaining-about-the-kingdom-of-kernel/)
+about this previously. Most of my opinions there still stand. Grant Likely
+held a BoF about the upcoming ARM EBBR. If you've been following the arm64
+server space, you may have heard of SBBR which is a boot specification for
+arm64 servers. The EBBR is something similar for embedded devices. As a
+Fedora maintainer, I'm happy to see this moving forward to make booting arm64
+SBCs easier. There was a discussion about contiguous memory allocation for
+DMA. Some hardware vendors have discovered they get better performance if
+they use a contiguous block of memory despite possibly having an IOMMU. The
+proposal was to use the `MAP_CONTIG` with mmap to get appropriate memory. There
+wasn't a conclusion and discussion is ongoing on the mailing list.
+
+The next week was XDC. This is nominally a graphics conference and was out
+of my typical scope. My primary purpose was to present on Ion.
+This was a one-track conference so it was nice to not
+have to make hard choices. Since I'm not a graphics developer, many of the
+details of some talks went over my head. The discussion about the
+[Intel Graphics CI](https://www.x.org/wiki/Events/XDC2017/peres_ci.pdf)
+was useful to hear. Intel has put a lot of effort in terms of
+machines and tests to graphics testing. A big takeaway from me was the need
+to add tests slowly to make sure that bugs can actually be fixed when
+they are found. This sounds obvious but without doing this, CI becomes noisy
+and is worthless.
+
+The final week was Linaro Connect. My primary reason for attending was (again)
+to talk about Ion but as always I attended some talks in between doing my
+regular work. I went to session about Secure Boot on ARM with an update of
+"not much has changed". There was a session about the Linaro common kernels
+and how those are maintained. The Linaro kernels once contained a large
+number of backports but there's been a lot of progress made towards getting
+code upstream. These days, there's more focus on testing and validating stable
+kernels upstream. Linaro should be providing automated testing to stable
+updates in the near future. There was a cross distro BoF which mostly touched
+on some discussion with toolchains because everything is pretty okay in
+distro land! Illyan Malchev from Google gave a keynote about Project Treble
+and announced that LTS kernels are now 6 years instead of 2. I talked
+[recently](http://www.labbott.name/blog/2017/09/06/kernels-need-updates-no-really/)
+about some of these Android announcements and the move to a 6 year cycle
+is a very good thing. This will make it easier to give updates without
+having to rebase to a brand new kernel.
+
+During these several weeks, I talked a lot about Ion. There's been some good
+progress this past year towards moving Ion out of mainline. I removed a bunch
+of code and greatly simplified the ABI. The biggest issue keeping Ion in
+staging is making sure the ABI is stable. There was agreement that we could
+look to move to a split ion (/dev/ion0, /dev/ion1 etc.) to better restrict
+heap access. I got some feedback that the existing 32-bit flags field may
+not be enough for expanding use cases so I'm going to look to utilize some of
+the existing fields we have for padding. There was a session on Ion integration
+challenges which was very useful to me. One of the hardest parts of doing Ion
+work has been finding a direction. Hearing what problems people are actually
+having makes this easier. Some of the problems are because I took the obvious
+(read slow) approach at things like cache maintenance. I tried to encourage
+people to submit patches for the features that are mission so hopefully I'll
+see those coming in the near future.
+
+This past weekend was [SeaGL](http://www.seagl.org), a local Seattle conference.
+Because I'm local, it was easy for me to attend. Unfortunately three weeks
+of conferencing caught up with me so I didn't attend as many parts of it as
+I would have liked. I attended the keynotes Friday and Saturday. Both Nithya
+Ruff and Rikki Endsley gave fantastic talks which were recorded. I gave a talk
+on Saturday afternoon called "Creating Fresh Kernels". This was a variation
+of the talk I gave at DevConf last year, focusing more on the choices
+distributions might make with their kernels instead of just why Fedora is
+awesome. I was fairly happy with how it went; the room was full and everyone
+asked good questions. I'd like to present again next year if I can come up
+with a good topic.
+
+I have a little bit of downtime before Open Source Summit Europe/Kernel Summit
+in a few weeks. We'll see if I can follow up on some of the discussions in
+the meantime.

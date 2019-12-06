@@ -1,0 +1,91 @@
+---
+layout: post
+date: 2017/11/16 11:00:00
+title: Fun with Le Potato
+category: fedora
+---
+At Linux Plumbers, I ended up with a [Le Potato SBC](https://libre.computer/products/boards/aml-s905x-cc/).
+I hadn't really had time to actually boot it up until now. They support a
+couple of distributions which seem to work fine if you flash them on. I mostly
+like SBCs for having actual hardware to test on so my interest tends to be
+how easily can I get my own kernel running.
+
+Most of the support is not upstream right now but it's headed there. The
+good folks at [BayLibre](http://baylibre.com/) have been working on getting
+the kernel support upstream and have a [tree](https://github.com/libre-computer-project/libretech-linux)
+available for use until then.
+
+The bootloader situation is less than ideal currently. All the images run with
+the vendor provided u-Boot which is a few years out of date and runs with a
+bunch of out of tree patches. This is unfortunately common for many boards.
+There wasn't much information about u-Boot so I asked on the
+[forums](http://forum.loverpi.com/categories/libre-computer-board-aml-s905x-cc).
+I got a very prompt and helpful response that u-Boot upstreaming is also in
+progress. The [first series](https://patchwork.ozlabs.org/project/uboot/list/?series=7912)
+looks like it's been reviewed and also comes with a very detailed README on
+how to actually build and install. This is important because you have to do
+some work to actually pick up the vendor firmware ('libre').
+
+So here's roughly what I did to get my own code running. I'll note that this is
+just for something to output on serial. Make sure you have an SD card handy:
+
+- Download [mainline u-Boot](http://git.denx.de/u-boot.git/)
+- Apply [the base series](https://patchwork.ozlabs.org/project/uboot/list/?series=7912)
+- Follow the instructions in the [README](https://patchwork.ozlabs.org/patch/825138/)
+for compiling the base u-Boot ("u-boot compilation" section). I should note
+that I didn't feel like grabbing a bare metal toolchain so I just used the
+package Fedora provides for cross compilation.
+(`CROSS_COMPILE=aarch64-linux-gnu-`) YMMV.
+
+The "Image creation" steps have a few gotchas, which I'll summarize:
+
+- `wget` the 4.8 toolchains. Before I asked on the forums about u-boot,
+I experimented with compiling the u-boot from the BSP with a newer toolchain.
+This was a bit of a nightmare so I just went ahead and used their suggested
+toolchain.
+- The toolchains are 32-bit binaries so you need to install 32-bit libs
+(`dnf install glibc.i686 libstd++.i686 zlib.i686`)
+- The vendor u-boot expects the toolchains to be in your path so set them
+accordingly.
+- Clone the vendor u-boot
+- Compile the 'vendor u-boot' (`make gxl_p212_v1_defconfig && make`)
+- Go back to your mainline u-Boot.
+- Run all the commands up to the `dd` commands (I put them in a shell script).
+Note that the line with `acs_tool.pyc` needs to be prefixed with `python`.
+- Run the `dd` command, setting the dev as appropriate.
+
+You now have an SD card with u-boot and firmware on it. Of course you still
+need a kernel.
+
+- Clone the [tree](https://github.com/libre-computer-project/libretech-linux)
+- `make ARCH=arm64 defconfig`
+- For a rootfs, I set `CONFIG_INITRAMFS_SOURCE` to point to my [buildroot](http://www.labbott.name/blog/2016/04/22/quick-kernel-hacking-with-qemu-+-buildroot/)
+environment I use with QEMU.
+- `make ARCH=arm64 CROSS_COMPILE=aarch64-linux-gnu`
+- Based on comments on the forums, I coverted the kernel to a uImage which
+u-boot understands:
+
+	path/to/u-boot/tools/mkimage -A arm64 -O linux -C none -T kernel -a 0x01080000 -e 0x01080000 -d path/to/kernel/arch/arm64/boot/Image uImage
+
+Fedora does provide `mkimage` in the `uboot-tools` package but given we're
+compiling u-boot, I went ahead and used the binary from that.
+
+- Insert the sdcard with u-boot to your computer and mount it (first partition
+should be FAT16)
+- Copy the uImage and `arch/arm64/boot/dts/amlogic/meson-gxl-s905x-libretech-cc.dtb`
+to the SD card
+
+Your SD card should now have the kernel and devicetree on it. If all has
+gone well, you should be able to insert it and get to the u-boot prompt. Based
+on the comments on the forums, I did
+
+- `loadaddr=1080000`
+- `fdt_high=0x20000000`
+- `fatload mmc 1:1 ${loadaddr} uImage`
+- `fatload mmc 1:1 ${fdt_high} meson-gxl-s905x-libretech-cc.dtb`
+- `bootm ${loadaddr} - ${fdt_high};`
+
+And it worked. Obviously this is a pretty simple setup but it shows that you
+can get something custom going if you want). I might try and throw in a version
+of Fedora on there to experiment with the multimedia hardware. I doubt this
+board will get official support unless the u-boot firmware situation improves.

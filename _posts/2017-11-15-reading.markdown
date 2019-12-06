@@ -1,0 +1,41 @@
+---
+layout: post
+date: 2017/11/15 11:00:00
+title: Some reading
+category: fedora
+---
+Like all good developers, I do not know everything and will happily admit this.
+I've spent some time recently reading a couple of books to help fill in
+some gaps in my knowledge.
+
+I've [complained](http://www.labbott.name/blog/2016/02/02/i-hate-benchmarking/)
+previously about disliking benchmarking. More generally, I'm not really a fan
+of performance analysis. I always feel like I get stuck at coming up with an
+approach to "it's going slower, why" beyond the basics. I watched a video
+of Brendan Gregg's [talk from kernel recipes](https://kernel-recipes.org/en/2017/talks/perf-in-netflix/),
+and ended up going down the black hole[^1] of reading his [well written blog](http://www.brendangregg.com/blog/).
+He does a fantastic job of explaining performance analysis concepts as well as
+the practical tools to do the analysis. He wrote a [book](http://www.brendangregg.com/sysperfbook.html)
+several years ago and I happily ordered it. The book explains how to apply
+the [USE method](http://www.brendangregg.com/usemethod.html) to performance
+problems across the system. This was helpful to me because it provides a way
+to generate a list of things to check and how to check them. It addresses the
+"stuck" feeling I get when dealing with performance problems. The book also
+provides a good high level overview of operating systems concepts. I'm always
+looking for references for people who are interested in kernels but don't know
+where to start and I think this book could fill a certain niche. Even
+if this book has been out for several years now, I was very excited to discover
+it.
+
+I consider networking the biggest black hole of mystery in the kernel. I've
+never been a network or sysadmin for anything except my own Linux machines.
+Most of my networking debugging involves just googling for the correct
+command to type. I ended up buying a copy of [Volume I of TCP/IP Illustrated](https://en.wikipedia.org/wiki/TCP/IP_Illustrated).
+This is the canonical text and it's quite dense. For my style though, it's
+been helpful for grasping concepts. I have a better idea of exactly how packets
+flow and what exactly various networking functions (e.g. VPN) actually do.
+It's not very useful for practical experience though so I want to find some
+tasks to apply some of the skills I've learned. Maybe I'll write more if I
+find something interesting.
+
+[^1]: I suffer from https://xkcd.com/214/ syndrome for all internet content.
