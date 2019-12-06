@@ -23,7 +23,7 @@ email: laura@labbott.name
 description: >- # this means to ignore newlines until "baseurl:"
  The personal blog of Laura Abbott
 baseurl: "" # the subpath of your site, e.g. /blog
-url: "http://www.labbott.name" # the base hostname & protocol for your site, e.g. http://example.com
+url: "https://www.labbott.name" # the base hostname & protocol for your site, e.g. http://example.com
 twitter_username: openlabbott
 github_username:  labbott
 
