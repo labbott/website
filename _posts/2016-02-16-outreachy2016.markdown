@@ -3,6 +3,7 @@ layout: post
 date: 2016/02/16 16:00:00
 title: Do Outreachy with the Fedora kernel team!
 category: fedora
+permalink: /blog/2016/02/16/do-outreachy-with-the-fedora-kernel-team/
 ---
 Compared to my other kernel teammates, I'm a relative newcomer to how the
 kernel is

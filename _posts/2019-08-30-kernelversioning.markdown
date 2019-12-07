@@ -3,6 +3,7 @@ layout: post
 date: 2019/08/30 11:00:00
 title: Petty gripes about kernel versioning and tarballs
 category: fedora
+permalink: /blog/2019/08/30/petty-gripes-about-kernel-versioning-and-tarballs/
 ---
 Today in gripes that about 5 people including me will have: it's really
 difficult to find a unified way to get a tarball from something on kernel.org

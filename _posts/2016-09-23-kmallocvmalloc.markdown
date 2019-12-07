@@ -3,6 +3,7 @@ layout: post
 date: 2016/09/23 16:00:00
 title: kmalloc and vmalloc
 tags: fedora
+permalink: /blog/2016/09/23/kmalloc-and-vmalloc/
 ---
 The kernel has the responsibility of setting up virtual to physical mappings
 for the system. This is something userspace processes take for granted and

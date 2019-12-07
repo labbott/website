@@ -3,6 +3,7 @@ layout: post
 date: 2016/08/08 11:00:00
 title: Flock 2016
 category: fedora
+permalink: /blog/2016/08/08/flock-2016/
 ---
 The annual [Flock](http://www.flocktofedora.org) was held last week in Poland.
 This year was much busier for me than [last year](http://www.labbott.name/blog/2015/08/17/flock-2015-and-being-new-in-town/).

@@ -3,6 +3,7 @@ layout: post
 date: 2018/03/23 11:00:00
 title: Kbuild tricks
 category: fedora
+permalink: /blog/2018/03/23/kbuild-tricks/
 ---
 Several of the tasks I've worked on recently have involved looking at some
 of the kernel's build infrastructure. This is all fairly well

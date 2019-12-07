@@ -3,6 +3,7 @@ layout: post
 date: 2016/07/21 11:00:00
 title: Open Source Infrastructure and the kernel
 category: fedora, hottakes
+permalink: /blog/2016/07/21/open-source-infrastructure-and-the-kernel/
 ---
 (Given I'm talking about the kernel ecosystem and corporations, this is a
 reminder that these thoughts are my own)

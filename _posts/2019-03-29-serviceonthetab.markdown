@@ -3,6 +3,7 @@ layout: post
 date: 2019/03/29 11:00:00
 title: Service on the TAB
 category: fedora
+permalink: /blog/2019/03/29/service-on-the-tab/
 ---
 I never posted about it but I was elected to the [TAB](https://www.linuxfoundation.org/about/technical-advisory-board/)
 last November. I'm deeply appreciative towards several people who reached out

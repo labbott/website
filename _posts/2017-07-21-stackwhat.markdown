@@ -3,6 +3,7 @@ layout: post
 date: 2017/07/21 11:00:00
 title: Fun with stacks
 category: fedora
+permalink: /blog/2017/07/21/fun-with-stacks/
 ---
 Like much of the kernel, most people don't think about the kernel stack until
 something goes wrong. Several topics have come up recently related to

@@ -3,6 +3,7 @@ layout: post
 date: 2016/11/29 11:00:00
 title: virt to phys and back again
 category: fedora
+permalink: /blog/2016/11/29/virt-to-phys-and-back-again/
 ---
 I've been working on `CONFIG_DEBUG_VIRTUAL` support for arm64. This is designed
 to catch bad uses of `virt_to_phys`[^1] on non-linear

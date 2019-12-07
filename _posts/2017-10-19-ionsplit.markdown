@@ -3,6 +3,7 @@ layout: post
 date: 2017/10/19 11:00:00
 title: Splitting the Ion heaps
 category: fedora
+permalink: /blog/2017/10/19/splitting-the-ion-heaps/
 ---
 One of the requests before Ion moves out of staging is to split the `/dev`
 interface into multiple nodes. The way Ion allocation currently works is

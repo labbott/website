@@ -3,6 +3,7 @@ layout: post
 date: 2017/02/02 11:00:00
 title: DevConf 2017
 category: fedora
+permalink: /blog/2017/02/02/devconf-2017/
 ---
 Last week was [DevConf](https://www.devconf.cz) in Brno, Czech Republic. I
 was there!

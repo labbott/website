@@ -3,6 +3,7 @@ layout: post
 date: 2016/09/15 11:00:00
 title: Secure(ish) boot with QEMU
 category: fedora
+permalink: /blog/2016/09/15/secure-ish-boot-with-qemu/
 ---
 (Edit 9/21: I've gotten some feedback and clarifications about a few steps and
 also updated the wiki. Thanks to the OVMF developers!)

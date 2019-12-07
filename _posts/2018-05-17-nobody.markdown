@@ -3,6 +3,7 @@ layout: post
 date: 2018/05/17 11:00:00
 title: The opinion nobody asked for
 category: hottakes
+permalink: /blog/2018/05/17/the-opinion-nobody-asked-for/
 ---
 Tired and cranky is probably not the best time to write a blog post but here
 it goes anyway. The business world seems to love to talk about 'authenticity'

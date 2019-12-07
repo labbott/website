@@ -3,6 +3,7 @@ layout: post
 date: 2016/05/20 16:00:00
 title: Rawhide Week 5/16-5/20
 category: fedora, rawhide
+permalink: /blog/2016/05/20/rawhide-week-5-16-5-20/
 ---
 This was the first week of the merge window for the 4.7 kernel. This included
 the merges of at least 43 trees (probably a few more that I didn't list as

@@ -3,6 +3,7 @@ layout: post
 date: 2018/05/16 11:00:00
 title: Fantastic kernel patches and where to find them
 category: fedora
+permalink: /blog/2018/05/16/fantastic-kernel-patches-and-where-to-find-them/
 ---
 I've griped before about kernel development being scattered and spread about.
 A quick grep of MAINTAINERS shows over 200 git trees and even more mailing

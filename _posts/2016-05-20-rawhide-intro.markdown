@@ -3,6 +3,7 @@ layout: post
 date: 2016/05/20 16:00:00
 title: Rawhide blogging
 category: fedora, rawhide
+permalink: /blog/2016/05/20/rawhide-blogging/
 ---
 April/May started the cycle of planning for the next year here in Red Hat. This
 means it's time to write goals. Goals are supposed to be

@@ -3,6 +3,7 @@ layout: post
 date: 2016/03/10 16:00:00
 title: The kernel blame game
 category: kernel, fedora
+permalink: /blog/2016/03/10/the-kernel-blame-game/
 ---
 Fedora is a system of many individual pieces, each of which can affect the
 others. The kernel is usually fairly self-contained, or at least it tries to be.

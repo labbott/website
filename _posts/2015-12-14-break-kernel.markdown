@@ -3,6 +3,7 @@ layout: post
 date: 2015/12/14 16:00:00
 title: It's okay, break your kernel
 category: fedora, kernel
+permalink: /blog/2015/12/14/it-s-okay-break-your-kernel/
 ---
 For those who haven't worked on it before, the kernel can give off an aura
 of mystery. It's a black box that gives error codes back when you don't make

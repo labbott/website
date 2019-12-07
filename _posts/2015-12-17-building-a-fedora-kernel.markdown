@@ -3,6 +3,7 @@ layout: post
 date: 2015/12/17 16:00:00
 title: Building and adding patches to the Fedora kernel
 category: fedora, kernel
+permalink: /blog/2015/12/17/building-and-adding-patches-to-the-fedora-kernel/
 ---
 Inevitably, after finding an interesting patch file it's time to actually
 add it to the Fedora kernel. The kernel team has tried our best to keep

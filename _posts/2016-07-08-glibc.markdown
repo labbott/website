@@ -3,6 +3,7 @@ layout: post
 date: 2016/07/08 11:00:00
 title: A rawhide debugging story
 category: fedora, rawhide
+permalink: /blog/2016/07/08/a-rawhide-debugging-story/
 ---
 Usually by this time in the kernel cycle, most of the major kernel work is done
 and rawhide 'just works'. I was grumpy to see that today's rawhide build

@@ -3,6 +3,7 @@ layout: post
 date: 2016/11/08 11:00:00
 title: Kernel Summit + Linux Plumbers 2016
 category: fedora
+permalink: /blog/2016/11/08/kernel-summit-+-linux-plumbers-2016/
 ---
 Last week was the annual kernel summit and [Linux Plumbers Conference](https://www.linuxplumbersconf.org/2016/)
 in Santa Fe, NM. Like other conferences, this involved a bunch of scheduled

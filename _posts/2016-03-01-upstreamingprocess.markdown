@@ -3,6 +3,7 @@ layout: post
 date: 2016/03/01 16:00:00
 title: Upstreaming in steps
 category: fedora
+permalink: /blog/2016/03/01/upstreaming-in-steps/
 ---
 I previously discussed the [kernel self protection project](http://www.labbott.name/blog/2016/02/09/kernel-self-protection-introduction/).
 As part of this, I've been looking at free memory sanitization. This task is

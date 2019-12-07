@@ -3,6 +3,7 @@ layout: post
 date: 2016/06/22 11:00:00
 title: Caching makes me cranky
 category: fedora, complaining
+permalink: /blog/2016/06/22/caching-makes-me-cranky/
 ---
 Among issues with Ion is its incorrect use of the DMA APIs. I've briefly
 [mentioned](http://www.labbott.name/blog/2015/10/22/ion-past-and-future/) this

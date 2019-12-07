@@ -2,6 +2,7 @@
 layout: post
 date: 2019/08/10 11:00:00
 title: And though scary is exciting nice is different than good
+permalink: /blog/2019/08/10/and-though-scary-is-exciting-nice-is-different-than-good/
 ---
 I've been at [Flock](http://www.flocktofedora.org) all week. This morning I was
 on a panel with other mentors/organizers for Fedora's outreach programs

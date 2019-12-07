@@ -3,6 +3,7 @@ layout: post
 date: 2016/10/03 11:00:00
 title: Linaro Connect Las Vegas 2016
 category: fedora
+permalink: /blog/2016/10/03/linaro-connect-las-vegas-2016/
 ---
 I spent last week at Linaro Connect in Las Vegas. Nominally I was there for
 some discussions about Ion. The week ended up being fairly full of the gamut

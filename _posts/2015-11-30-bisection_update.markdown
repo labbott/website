@@ -3,6 +3,7 @@ layout: post
 date: 2015/11/30 16:00:00
 title: A look at the kernel bisection scripts
 category: fedora
+permalink: /blog/2015/11/30/a-look-at-the-kernel-bisection-scripts/
 ---
 I've been hacking on the bisection scripts for quite some time now.
 Things got stalled for a bit in October/November. I introduced

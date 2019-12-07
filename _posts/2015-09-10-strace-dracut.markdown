@@ -3,6 +3,7 @@ layout: post
 date: 2015/09/10 16:00:00
 title: Debugging modprobe in dracut
 category: fedora
+permalink: /blog/2015/09/10/debugging-modprobe-in-dracut/
 ---
 Related to bisection, I've been working on some custom packaging of the
 kernel. This has basically involved hacking away at the existing kernel.spec

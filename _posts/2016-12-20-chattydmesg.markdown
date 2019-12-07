@@ -3,6 +3,7 @@ layout: post
 date: 2016/12/20 11:00:00
 title: Chatty kernel logs
 category: fedora
+permalink: /blog/2016/12/20/chatty-kernel-logs/
 ---
 Most people don't care about the kernel until it breaks or they think it is
 broken. When this happens, usually the first place people look is the kernel

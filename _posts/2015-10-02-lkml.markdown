@@ -3,6 +3,7 @@ layout: post
 date: 2015/10/02 16:00:00
 title: The Art of Communicating with LKML
 category: fedora, kernel
+permalink: /blog/2015/10/02/the-art-of-communicating-with-lkml/
 ---
 For most users of distros, the distro bug system is the first line of interaction
 when something kernel related breaks on their system. This makes sense: the

@@ -3,6 +3,7 @@ layout: post
 date: 2018/09/06 11:00:00
 title: LSS/OSS NA 2018
 category: fedora
+permalink: /blog/2018/09/06/lss-oss-na-2018/
 ---
 Last week was [Open Source Summit](https://events.linuxfoundation.org/events/open-source-summit-north-america-2018/)
 and [Linux Security Summit](https://events.linuxfoundation.org/events/linux-security-summit-north-america-2018/)

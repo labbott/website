@@ -2,6 +2,7 @@
 layout: post
 date: 2019/11/15 11:00:00
 title: What's a kernel headers package anyway
+permalink: /blog/2019/11/16/what-s-a-kernel-headers-package-anyway/
 category: fedora
 ---
 I've written [before](https://www.labbott.name/blog/2018/06/21/what-s-a-kernel-devel-package-anyway/)

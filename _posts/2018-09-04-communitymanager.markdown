@@ -3,6 +3,7 @@ layout: post
 date: 2018/09/04 11:00:00
 title: Kernel community management
 category: fedora
+permalink: /blog/2018/09/04/kernel-community-management/
 ---
 I was at [Open Source Summit](https://events.linuxfoundation.org/events/open-source-summit-north-america-2018/)
 last week (full trip report forthcoming) and like always one of the keynotes

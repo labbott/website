@@ -3,6 +3,7 @@ layout: post
 date: 2015/08/17 16:00:00
 title: Flock 2015 and being new in town
 category: fedora
+permalink: /blog/2015/08/17/flock-2015-and-being-new-in-town/
 ---
 
 I spent most of last week at [Flock 2015](http://www.flocktofedora.org) in

@@ -3,6 +3,7 @@ layout: post
 date: 2019/01/10 11:00:00
 title: Kernel numbering and Fedora
 category: fedora
+permalink: /blog/2019/01/10/kernel-numbering-and-fedora/
 ---
 By now it's made the news that the kernel version has jumped to [version 5.0](https://lwn.net/Articles/776102/).
 Once again, this numbering jump means nothing except Linus decide that he

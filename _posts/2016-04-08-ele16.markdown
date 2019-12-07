@@ -3,6 +3,7 @@ layout: post
 date: 2016/04/08 16:00:00
 title: ELC 2016
 category: kernel, fedora
+permalink: /blog/2016/04/08/elc-2016/
 ---
 I got home from [ELC](http://events.linuxfoundation.org/events/embedded-linux-conference)
 on Wednesday night. I'm not doing embedded work on a day to day basis as much

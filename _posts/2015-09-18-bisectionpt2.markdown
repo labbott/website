@@ -3,6 +3,7 @@ layout: post
 date: 2015/09/18 16:00:00
 title: Bisection, part 2
 category: fedora
+permalink: /blog/2015/09/18/bisection-part-2/
 ---
 As described before, bisection works by taking a series of commits and
 testing systematically to find which commit introduced the regression. This

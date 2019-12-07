@@ -3,6 +3,7 @@ layout: post
 date: 2018/02/05 11:00:00
 title: DevConf 2018
 category: fedora
+permalink: /blog/2018/02/05/devconf-2018/
 ---
 [DevConf 2018](https://devconf.cz/cz/2018) happened. A grand time was had by
 me (and hopefully others)

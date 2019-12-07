@@ -3,6 +3,7 @@ layout: post
 date: 2016/08/15 11:00:00
 title: Ideas for getting started in the Linux kernel
 category: fedora
+permalink: /blog/2016/08/15/ideas-for-getting-started-in-the-linux-kernel/
 ---
 Getting new people into OSS projects is always a challenge. The Linux kernel
 is no different and has it's own set of challenges.  This is a follow up and

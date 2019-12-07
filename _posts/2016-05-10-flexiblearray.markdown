@@ -3,6 +3,7 @@ layout: post
 date: 2016/05/10 16:00:00
 title: Zero size arrays in C
 category: fedora
+permalink: /blog/2016/05/10/zero-size-arrays-in-c/
 ---
 The current structure definition of the ion system heap involves a zero sized
 array:

@@ -3,6 +3,7 @@ layout: post
 date: 2015/10/19 16:00:00
 title: Linaro Connect US '15
 category: fedora, kernel
+permalink: /blog/2015/10/19/linaro-connect-us-15/
 ---
 One of the items that came out of Linux plumbers for me was discussion on
 the future of the Ion memory manager for Android. While not as relevant

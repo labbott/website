@@ -3,6 +3,7 @@ layout: post
 date: 2017/02/20 11:00:00
 title: Maintainerati
 category: fedora
+permalink: /blog/2017/02/20/maintainerati/
 ---
 I spent last Wednesday hanging out in San Francisco for the first annual
 [maintainerati](https://maintainerati.org/) event. The idea was that there

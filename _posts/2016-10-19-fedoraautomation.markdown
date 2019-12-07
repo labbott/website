@@ -3,6 +3,7 @@ layout: post
 date: 2016/10/19 11:00:00
 title: Fedora kernel scripting
 category: fedora
+permalink: /blog/2016/10/19/fedora-kernel-scripting/
 ---
 When I joined the Fedora kernel team about 1.5 years ago, I was the first brand
 new person in a long time. My teammates had most of the infrastructure

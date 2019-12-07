@@ -3,6 +3,7 @@ layout: post
 date: 2016/02/09 16:00:00
 title: Kernel self protection introduction
 category: fedora
+permalink: /blog/2016/02/09/kernel-self-protection-introduction/
 ---
 At the last kernel summit, Kees Cook started calling for people to participate
 in the ["Kernel Self Protection Project"](https://lwn.net/Articles/663361/)

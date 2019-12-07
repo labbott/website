@@ -3,6 +3,7 @@ layout: post
 date: 2018/06/01 11:00:00
 title: More kbuild for reproducible builds
 category: fedora
+permalink: /blog/2018/06/01/more-kbuild-for-reproducible-builds/
 ---
 I'm still working on patches to deal with [build ids](https://www.labbott.name/blog/2017/12/04/build-ids-and-the-fedora-kernel/)
 for the kernel. One issue I spent way too long figuring out was that if you

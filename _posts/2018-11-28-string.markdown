@@ -3,6 +3,7 @@ layout: post
 date: 2018/11/28 11:00:00
 title: String copying in the kernel
 category: fedora
+permalink: /blog/2018/11/28/string-copying-in-the-kernel/
 ---
 One of the many areas that the [kernel self protection project](http://kernsec.org/wiki/index.php/Kernel_Self_Protection_Project)
 looks at is making sure kernel developers are using APIs correctly and safely.

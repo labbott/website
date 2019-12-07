@@ -3,6 +3,7 @@ layout: post
 date: 2019/10/28 11:00:00
 title: Why you can't (easily) get Kconfig help from the command line
 category: fedora
+permalink: /blog/2019/10/28/why-you-can-t-easily-get-kconfig-help-from-the-command-line/
 ---
 When something seemingly simple isn't implemented in an open source project,
 there are two likely reasons. One, nobody has bothered to sit down and work

@@ -3,6 +3,7 @@ layout: post
 date: 2018/02/28 11:00:00
 title: Fun with gcc plugins
 category: fedora
+permalink: /blog/2018/02/28/fun-with-gcc-plugins/
 ---
 One of piece of infrastructure that's come in as part of the
 [Kernel Self Protection Project (KSPP)](https://kernsec.org/wiki/index.php/Kernel_Self_Protection_Project)

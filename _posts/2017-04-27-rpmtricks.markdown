@@ -3,6 +3,7 @@ layout: post
 date: 2017/04/27 11:00:00
 title: Boring rpm tricks
 category: fedora
+permalink: /blog/2017/04/27/boring-rpm-tricks/
 ---
 Several of my tasks over the past month or so have involved working with the
 monstrosity that is the `kernel.spec` file. The `kernel.spec` file is about

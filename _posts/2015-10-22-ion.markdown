@@ -3,6 +3,7 @@ layout: post
 date: 2015/10/22 16:00:00
 title: Ion past and future
 category: fedora, kernel
+permalink: /blog/2015/10/22/ion-past-and-future/
 ---
 I've mentioned Ion a few times in past posts now, so this post
 is explaining some of past, present, and maybe future for Ion

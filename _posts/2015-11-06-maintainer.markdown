@@ -3,6 +3,7 @@ layout: post
 date: 2015/11/06 16:00:00
 title: The work of maintaining a kernel tree
 category: fedora, kernel
+permalink: /blog/2015/11/06/the-work-of-maintaining-a-kernel-tree/
 ---
 As mentioned in the previous discussion on bisection, Fedora maintains a 
 series of patches on top of the kernel.org kernel (Kernel jargon:

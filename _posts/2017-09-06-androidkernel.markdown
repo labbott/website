@@ -3,6 +3,7 @@ layout: post
 date: 2017/09/06 11:00:00
 title: Kernels need updates, no really
 category: fedora
+permalink: /blog/2017/09/06/kernels-need-updates-no-really/
 ---
 Google has been announcing new details about its next Android release, Oreo.
 One of the items that came out is a new requirement for a

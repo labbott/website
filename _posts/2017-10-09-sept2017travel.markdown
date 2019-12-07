@@ -3,6 +3,7 @@ layout: post
 date: 2017/10/09 11:00:00
 title: A few fall conferences
 category: fedora
+permalink: /blog/2017/10/09/a-few-fall-conferences/
 ---
 At some point in time, I decided it was a good idea to attend three conferences
 in September. This was a busy but fairly productive month.

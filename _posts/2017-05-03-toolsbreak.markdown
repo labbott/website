@@ -3,6 +3,7 @@ layout: post
 date: 2017/05/03 11:00:00
 title: When tools break the kernel
 category: fedora
+permalink: /blog/2017/05/03/when-tools-break-the-kernel/
 ---
 The kernel is really self-contained. This makes it great for [trying](http://www.labbott.name/blog/2015/12/14/it-s-okay-break-your-kernel/)
 experiments and breaking things. It also means that most bugs are also going to

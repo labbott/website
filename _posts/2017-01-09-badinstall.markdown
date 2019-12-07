@@ -3,6 +3,7 @@ layout: post
 date: 2017/01/09 11:00:00
 title: That's not what I wanted Linux
 category: fedora, complaining
+permalink: /blog/2017/01/09/that-s-not-what-i-wanted-linux/
 ---
 Once upon a time, I was an intern at a company doing embedded Linux. This was a
 pretty good internship for a student. A lot of my work involved making builds

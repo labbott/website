@@ -3,6 +3,7 @@ layout: post
 date: 2017/09/05 11:00:00
 title: Flock 2017
 category: fedora
+permalink: /blog/2017/09/05/flock-2017/
 ---
 Last week was Flock 2017 in Hyannis, MA. I was there!
 

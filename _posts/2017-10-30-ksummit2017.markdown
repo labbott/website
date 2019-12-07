@@ -3,6 +3,7 @@ layout: post
 date: 2017/10/30 11:00:00
 title: OSS/Ksummit 2017
 category: fedora
+permalink: /blog/2017/10/30/oss-ksummit-2017/
 ---
 Last week was kernel summit in Prague. Based on feedback from Linus and other
 people, kernel summit was a 2 day open technical forum along with a half-day

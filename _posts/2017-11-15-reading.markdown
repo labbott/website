@@ -3,6 +3,7 @@ layout: post
 date: 2017/11/15 11:00:00
 title: Some reading
 category: fedora
+permalink: /blog/2017/11/15/some-reading/
 ---
 Like all good developers, I do not know everything and will happily admit this.
 I've spent some time recently reading a couple of books to help fill in

@@ -3,6 +3,7 @@ layout: post
 date: 2016/10/06 11:00:00
 title: Write your own kmalloc
 category: fedora
+permalink: /blog/2016/10/06/write-your-own-kmalloc/
 ---
 While at Linaro connect, I was discussing with someone the state of the
 [Energy Aware Scheduler (EAS)](http://www.linaro.org/blog/core-dump/energy-aware-scheduling-eas-project/)

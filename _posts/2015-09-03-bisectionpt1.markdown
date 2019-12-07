@@ -3,6 +3,7 @@ layout: post
 date: 2015/09/03 16:00:00
 title: Bisection, part 1
 category: fedora
+permalink: /blog/2015/09/03/bisection-part-1/
 ---
 (This was originally going to be a post on the pains of scripting
 bisection but the background on the importance of bisection turned out

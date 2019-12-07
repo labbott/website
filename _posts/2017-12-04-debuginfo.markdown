@@ -3,6 +3,7 @@ layout: post
 date: 2017/12/04 11:00:00
 title: Build ids and the Fedora kernel
 category: fedora
+permalink: /blog/2017/12/04/build-ids-and-the-fedora-kernel/
 ---
 One of the overlooked aspects of packaging is how much stuff can be handled
 automatically for relatively simple packages. Debugging symbols are a good

@@ -3,6 +3,7 @@ layout: post
 date: 2015/08/26 16:00:00
 title: Linux Plumbers Conference 2015
 category: fedora
+permalink: /blog/2015/08/26/linux-plumbers-conference-2015/
 ---
 
 [Linux Plumbers 2015](https://linuxplumbersconf.org/2015/) finished up last

@@ -3,6 +3,7 @@ layout: post
 date: 2017/04/03 11:00:00
 title: Complaining about the kingdom of kernel
 category: fedora, complaining
+permalink: /blog/2017/04/03/complaining-about-the-kingdom-of-kernel/
 ---
 Jonathan Corbet of [LWN](http://www.lwn.net) gave a keynote at Linaro Connect
 about [The kernel's limits to growth](http://connect.linaro.org/resource/bud17/bud17-500k1/).

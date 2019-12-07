@@ -3,6 +3,7 @@ layout: post
 date: 2015/12/15 16:00:00
 title: Grabbing kernel patches from mailing lists and the internet
 category: fedora, kernel
+permalink: /blog/2015/12/15/grabbing-kernel-patches-from-mailing-lists-and-the-internet/
 ---
 The kernel community runs on mailing lists. All change sets end up through
 one mailing list or another. The mailing list is great for reviewing and

@@ -3,6 +3,7 @@ layout: post
 date: 2016/09/08 11:00:00
 title: Success with interns
 category: fedora
+permalink: /blog/2016/09/08/success-with-interns/
 ---
 Outreachy ended last month. Given this was the first time the
 kernel team has tried to do this, I think it went well. I've been reflecting

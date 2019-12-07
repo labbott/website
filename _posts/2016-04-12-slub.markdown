@@ -3,6 +3,7 @@ layout: post
 date: 2016/04/12 16:00:00
 title: Some SLUB internals
 category: fedora, kernel
+permalink: /blog/2016/04/12/some-slub-internals/
 ---
 The SLUB debug path performance is improved with the patches I submitted. There
 is still a nagging issue with the current debug path though. This is an

@@ -3,6 +3,7 @@ layout: post
 date: 2018/04/26 11:00:00
 title: LSF/MM 2018
 category: fedora
+permalink: /blog/2018/04/26/lsf-mm-2018/
 ---
 Wheee LSF/MM. Highlights.
 

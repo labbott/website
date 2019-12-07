@@ -3,6 +3,7 @@ layout: post
 date: 2017/04/11 11:00:00
 title: Single images and page sizes
 category: fedora
+permalink: /blog/2017/04/11/single-images-and-page-sizes/
 ---
 "The year of Linux on the desktop" is an old running joke. This has resulted
 in many "The year of X on the Y" spin off jokes. One of these that's close to

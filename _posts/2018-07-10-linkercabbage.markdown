@@ -3,6 +3,7 @@ layout: post
 date: 2018/07/10 11:00:00
 title: The cabbage patch for linker scripts
 category: fedora
+permalink: /blog/2018/07/10/the-cabbage-patch-for-linker-scripts/
 ---
 Quick quiz: what package provides `ld`? If you said binutils and not gcc, you
 are a winner! That's not actually the story, I just tend to forget which package

@@ -3,6 +3,7 @@ layout: post
 date: 2018/05/03 11:00:00
 title: Some notes on recent random numbers
 category: fedora
+permalink: /blog/2018/05/03/some-notes-on-recent-random-numbers/
 ---
 By now people may have seen complaints of [boot slowdown](https://fedoraproject.org/wiki/Common_F28_bugs#Core_system_issues)
 on newer kernels. I want to explain a little more about what's going on and

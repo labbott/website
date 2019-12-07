@@ -3,6 +3,7 @@ layout: post
 date: 2018/08/14 11:00:00
 title: Flock 2018
 category: fedora
+permalink: /blog/2018/08/14/flock-2018/
 ---
 Last week was [Flock 2018](https://flock2018.sched.com/). Highlights:
 

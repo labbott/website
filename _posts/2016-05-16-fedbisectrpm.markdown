@@ -3,6 +3,7 @@ layout: post
 date: 2016/05/16 16:00:00
 title: Packaging the bisect scripts
 category: fedora
+permalink: /blog/2016/05/16/packaging-the-bisect-scripts/
 ---
 One of the goals of the bisect scripts was to lower the effort for non-kernel
 developers to bisect the kernel. When the scripts are used on the right

@@ -3,6 +3,7 @@ layout: post
 date: 2016/06/10 16:00:00
 title: Module filtering and depmod
 category: fedora, rawhide
+permalink: /blog/2016/06/10/module-filtering-and-depmod/
 ---
 Rawhide has been quiet since the first week of the merge window.
 The 2nd week had a smattering of kernel options to be enabled but almost no

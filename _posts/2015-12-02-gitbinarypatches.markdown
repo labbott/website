@@ -3,6 +3,7 @@ layout: post
 date: 2015/12/02 16:00:00
 title: Git, binary files, and patches
 category: fedora, kernel
+permalink: /blog/2015/12/02/git-binary-files-and-patches/
 ---
 	$ mkdir test_repo
 	$ cd test_repo/

@@ -3,6 +3,7 @@ layout: post
 date: 2018/06/21 11:00:00
 title: What's a kernel devel package anyway
 category: fedora
+permalink: /blog/2018/06/21/what-s-a-kernel-devel-package-anyway/
 ---
 One of the first concepts you learn when building open source software is the
 existance of -devel packages. You have package `foo` to provide some

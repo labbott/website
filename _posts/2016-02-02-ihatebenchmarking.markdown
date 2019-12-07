@@ -3,6 +3,7 @@ layout: post
 date: 2016/02/02 16:00:00
 title: I hate benchmarking
 category: fedora
+permalink: /blog/2016/02/02/i-hate-benchmarking/
 ---
 Among development tasks, one of my least favorite is benchmarking and I tend
 to procrastinate on it (by writing blog posts, for example). Allow

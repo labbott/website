@@ -3,6 +3,7 @@ layout: post
 date: 2018/01/06 11:00:00
 title: There will always be hardware bugs
 category: fedora, hottakes
+permalink: /blog/2018/01/06/there-will-always-be-hardware-bugs/
 ---
 By now everyone has seen the latest exploit, [meltdown and spectre](https://meltdownattack.com),
 complete with logos and full academic paper. The gist of this is that side

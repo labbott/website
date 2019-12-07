@@ -3,6 +3,7 @@ layout: post
 date: 2015/07/30 11:00:00
 title: Please sign off your patches
 category: fedora
+permalink: /blog/2015/07/30/please-sign-off-your-patches/
 ---
 One aspect of open source that appeals to many people is the idea that anyone
 can contribute. All it takes is a great idea, a little bit of work, and you

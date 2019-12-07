@@ -3,6 +3,7 @@ layout: post
 date: 2018/01/24 11:00:00
 title: When the canary breaks the coal mine
 category: fedora
+permalink: /blog/2018/01/24/when-the-canary-breaks-the-coal-mine/
 ---
 Nobody likes it when kernels don't work and even less so when they are broken
 on a Friday afternoon. Yet that's what happened last Friday. This was
