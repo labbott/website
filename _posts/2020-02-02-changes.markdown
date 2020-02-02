@@ -1,0 +1,22 @@
+---
+layout: post
+date: 2020/02/02 11:00:00
+title: Changes
+category: fedora
+---
+I mentioned this on twitter and the Fedora kernel mailing list but January 17th
+was my last day at Red Hat. I can't express enough thanks to every single
+person I met during my nearly 5(!) years there. I came in to Fedora as
+basically an outsider and everyone welcomed me with open arms. You all
+touched my life in ways I will never forget. I enjoyed all the challenges
+of being a kernel maintainer and working to make things better.
+
+I started my new role at [Oxide Computer](https://oxide.computer) on January
+20th. I'm very excited to be working with this team to solve real industry
+problems and learn new and exciting things about hardware and software. I'm
+not doing Linux kernel work on a day-to-day basis at the moment but I still
+expect to be around the community. I'm still on the [TAB](https://www.linuxfoundation.org/about/technical-advisory-board/)
+and I'm still on the Linux Plumbers planning committee (yes the website will
+be up soon). Start ups move fast so we'll see what I end up working on.
+
+Here's to new changes in 2020!
