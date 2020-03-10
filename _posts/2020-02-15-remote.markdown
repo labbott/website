@@ -1,8 +1,11 @@
 ---
 layout: post
 title: Remote work 
-date:   2020-02-15 17:25:02 -0500
+date:   2020-03-10 00:00:00 -0500
 ---
+(I wrote this post over a month ago but failed to realize it never actually
+published. In light of current events, I'm pushing this again)
+
 I've been working remote for nearly 5 years and two companies now. There's
 a set of questions/comments I seem to get pretty frequently.
 
