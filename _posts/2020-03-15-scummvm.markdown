@@ -1,0 +1,74 @@
+---
+layout: post
+title: Accidental debugging with ScummVM
+date:   2020-03-15 00:00:00 -0500
+---
+Like a lot of people in the world, I have not had an outstanding week. I had
+been dealing with a bout of insomnia that persisted through time changes.
+That, thankfully, has finally fixed itself this past week but my body is
+still catching up. Combine that with the general stress of the
+[Corona virus](https://www.who.int) plus some other factors and I have not
+been in the best of moods. In the interest of trying to improve things, I
+decided to return to some of my favorite games: LucasArts adventure games.
+
+[LucasArts](https://en.wikipedia.org/wiki/LucasArts) was the game division
+of LucasFilm. While most people will recognize LucasFilm for Star Wars,
+LucasArts was responsible for a number of beloved video game series in
+the adventure game genre. Many of these video games shared a common engine
+called [SCUMM](https://en.wikipedia.org/wiki/SCUMM). Fans of these games
+reverse engineered the engine and started a project called
+[SCUMMVM](https://www.scummvm.org) to play the games on newer platforms
+using the original data files. I, fortunately, had the original data files
+that I used on my [family computer](https://en.wikipedia.org/wiki/Macintosh_LC_500_series)
+growing up.
+
+I played through [Indiana Jones and the Fate of Atlantis](https://en.wikipedia.org/wiki/Indiana_Jones_and_the_Fate_of_Atlantis)
+last night. It was both as entertaining and as frustrating as I remember (I
+remembered most of the puzzles but I hate flying the balloon and driving the
+submarine. Don't get me started on the fighting mechanics.). This afternoon,
+I decided to pull out the first [Monkey Island](https://en.wikipedia.org/wiki/Monkey_Island_(series))
+game. Much to my disappointment, the game crashed almost as soon as soon as it
+started.
+
+A smarter person might have just given up and done something else but I wanted
+to be a good open source participant and see if I could file a bug. I verified
+that, yes, it crashed on the latest nightly version as well. I was running
+this on Mac OSX so I figured I would test it on Linux as well for good measure.
+It crashed there too. At this point I was already in too deep so I figured I
+might as well clone the git tree and see if I could get some more information
+on Linux.
+
+One `./configure` and `make` later, I had the binary running (and crashing!)
+in gdb. It appeared to be crashing on a null pointer in [sound](https://github.com/scummvm/scummvm/blob/6ed8dea8297480d4c42ed0d38a23734df48067e6/engines/scumm/players/player_mac.cpp#L377)
+initialization. This was in code specific to the mac version so my first
+thought was something else changed and missed updating the code. From tracing,
+it looked like there was a missing call to `loadInstrument`. More tracing
+showed that it should have been called in [loadMusic](https://github.com/scummvm/scummvm/blob/6ed8dea8297480d4c42ed0d38a23734df48067e6/engines/scumm/players/player_v5m.cpp#L156)
+and that it was never entering the loop at all. `idArray.size()` was 0. Weird.
+I stared trying to look at the resource parsing code when I decided to look
+at the binary itself. IT WAS 0 BYTES! The code was checking if the binary
+existed (which it did) but it wasn't pulling anything out of it. The code was
+missing an error check somewhere. If I deleted the empty file I got an error
+that there would be no music but it didn't crash.
+
+The mystery of the crash was solved but why did I have a zero byte binary?
+The other data files seemed to be just fine? I don't have a 100% answer for
+sure but I suspect it boils down to how the original Mac OS stored files
+and my haphazard archive strategy. Files on Mac OS before X had the notion of
+a [Resource Fork](https://en.wikipedia.org/wiki/Resource_fork)
+and the Data fork. The resource fork was designed to store parts of an
+application like menu information in a structured format that could be easily
+changed and edited. I spent a lot of my childhood using [ResEdit](https://en.wikipedia.org/wiki/ResEdit)
+to edit the resource fork in various [games](https://en.wikipedia.org/wiki/Glider_(video_game))
+to tweak text strings and graphics. The concepts of 'forks' was also very
+tied to the [HFS file system](https://en.wikipedia.org/wiki/Hierarchical_File_System).
+In order to properly share files across a non HFS file system, you needed to
+make sure the resource fork was preserved using a file format such as [MacBinary](https://en.wikipedia.org/wiki/MacBinary),
+[BinHex](https://en.wikipedia.org/wiki/BinHex) or [Stuffit](https://en.wikipedia.org/wiki/StuffIt).
+I suspect somewhere along the way I failed to transfer the file with the
+resource fork intact and the data got lost (the move to Dropbox is a likely
+candidate).
+
+My original plan was to specifically avoid programming for relaxation but
+this ended up being a nice short distraction which was the important part.
+Now on to that rubber chicken with a pulley in the middle.
