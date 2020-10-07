@@ -1,0 +1,180 @@
+---
+layout: post
+date: 2020/10/07 11:00:00
+title: How to be a spooky ARMv8m hardware debugger
+category: fedora
+---
+Debuggers are one of many tools available to assist developers in figuring out
+problems.Many of the ARM Cortex-M boards support a standard called
+[CMSIS-DAP](https://os.mbed.com/handbook/CMSIS-DAP)
+for hardware debugging.
+This is designed to let board makers provide a dedicated chip to facilitate
+communication between a debugger chip and a host. The debugger chip then
+commmincates to the actual CPU being debugged via other signals.
+Like all standards,
+implementation can be incomplete and buggy but if a board says it has
+CMSIS-DAP support, there's a good chance it will "just work" for debugging.
+You could leave all the details to debuggers but it also turns out you can do
+many of these steps with CMSIS-DAP yourself. Being a debugger is also a great
+Halloween costume because you can do mysterious things to your device and
+also stay home. There is no candy involved unfortunately but knowledge is
+pretty sweet.
+
+ARM has fairly detailed documentation on their [website](https://developer.arm.com/documentation/ihi0031/a)
+about how this works behind the scenes. At a very high level, you can write to
+the Debug Port and some number of Access Ports to affect the state of the
+chip. The actual detail of what's implemented is given by [ROM tables](https://developer.arm.com/documentation/ihi0031/a/ROM-Tables?lang=en).
+A fairly common setup is a debug port and then a Memory Access Port (MEM-AP)
+per CPU.
+
+There's a Rust package called [probe-rs](https://crates.io/crates/probe-rs)
+to handle the communication and transport. It has abstractions to do things
+like read/write from memory but you can also implement the commands yourself
+at the DP/AP level. One of the first tasks everyone wants to do as a debugger
+is read memory. The CMSIS-DAP page even gives the commands you need to run
+to set it up:
+
+```
+use probe_rs::architecture::arm::{
+    ap::{AddressIncrement, DataSize, CSW},
+    ArmCommunicationInterface, ArmCommunicationInterfaceState, PortType,
+};
+use probe_rs::{DebugProbeError, Probe};
+
+fn main() {
+    let probes = Probe::list_all();
+    let mut state = ArmCommunicationInterfaceState::new();
+    let mut probe = probes[0].open().unwrap();
+    probe.attach_to_unspecified().unwrap();
+
+    // The ArmCommunicationInterface doesn't give DAP access but it's also
+    // the only real way to enter debug mode so cheat and set it up but
+    // then ignore it
+    let _fake_face = ArmCommunicationInterface::new(&mut probe, &mut state)
+        .unwrap()
+        .unwrap();
+
+    let interface = probe
+        .get_interface_dap_mut()
+        .unwrap()
+        .ok_or_else(|| DebugProbeError::InterfaceNotAvailable("ARM"))
+        .unwrap();
+
+    interface
+        .write_register(PortType::DebugPort, 0x8, 0x00000000)
+        .unwrap();
+
+    let old_csw_val = interface
+        .read_register(PortType::AccessPort(0x0), 0x0)
+        .unwrap();
+
+    let old_csw = CSW::from(old_csw_val);
+
+    let mut new_csw = CSW::default();
+
+    if old_csw.SPIDEN != 0 {
+        new_csw.PROT = 0b010;
+    } else {
+        new_csw.PROT = 0b110;
+    }
+
+    new_csw.CACHE = 0b11;
+
+    new_csw.AddrInc = AddressIncrement::Single;
+
+    new_csw.SIZE = DataSize::U32;
+
+    interface
+        .write_register(PortType::AccessPort(0x0), 0x0, new_csw.into())
+        .unwrap();
+
+    interface
+        .write_register(PortType::AccessPort(0x0), 0x4, 0x0)
+        .unwrap();
+
+    let result = interface.read_register(PortType::AccessPort(0x0), 0xc);
+
+    println!("read value {:x?}", result);
+}
+```
+
+Breaking this down a little, we do some initial setup to get `interface` to
+actually let us write to the registers. This is pretty hacky because probe-rs
+doesn't expose any of these ports directly but it's good enough for
+experimentation purposes.
+
+The first step is to make sure we're accessing the correct access port with
+a write to the DebugPort `SELECT` register at address `0x8`. This is
+[described in detail](https://developer.arm.com/documentation/ihi0031/a/Debug-Port-Registers/Debug-Port--DP--register-descriptions/The-AP-Select-Register--SELECT?lang=en)
+in the manual but the trick here is that we're selecting access port #0 and
+bank #0 of AP registers. Once that is written, we can actually access the
+AP registers.
+
+The read consists of 3 steps: write the `CSW` at `0x0` to control our read
+request, write the `TAR` at `0x4` for what address we want to read and then
+read the result from the `DRW` register at `0xC`. The [`CSW`](https://developer.arm.com/documentation/ihi0031/a/Memory-Access-Port--MEM-AP--Registers/MEM-AP-detailed-register-descriptions/Control-Status-Word--CSW--Register?lang=en)
+is the most interesting register for controlling how the access goes out on the
+bus. 
+
+Naturally after reading the next thing you would want to do is write. This is
+as easy as writing to `DRW`. A great example of something to write is the
+[`DHCSR`](https://developer.arm.com/documentation/ddi0337/e/core-debug/core-debug-registers/debug-halting-control-and-status-register) .
+This register is responsible for halting the processor among other uses. So
+we can change the code to:
+
+```
+    interface
+        .write_register(PortType::AccessPort(0x0), 0x4, 0xE000EDF0)
+        .unwrap();
+
+    let result = interface.write_register(PortType::AccessPort(0x0), 0xc, 0xA05F0003);
+```
+
+and the processor halts. Spooky!
+
+"Okay but what about setting registers can you really do that with just
+read/write" Yes, there is a register for that too!
+The [`DCRSR`](https://developer.arm.com/documentation/ddi0337/e/core-debug/core-debug-registers/debug-core-register-selector-register)
+is designed to do exactly that! You'll get some odd behavior if you don't halt
+the processor first but using that code plus the [`DCRDR`](https://developer.arm.com/documentation/ddi0337/e/core-debug/core-debug-registers/debug-core-register-data-register)
+you can read/write the CPU registers:
+
+```
+    // Put 0x1234 in the DCRDR
+    interface
+        .write_register(PortType::AccessPort(0x0), 0x0, new_csw.into())
+        .unwrap();
+
+    interface
+        .write_register(PortType::AccessPort(0x0), 0x4, 0xE000EDF8)
+        .unwrap();
+
+    interface
+        .write_register(PortType::AccessPort(0x0), 0xc, 0x1234)
+        .unwrap();
+
+    // Write to r11
+    interface
+        .write_register(PortType::AccessPort(0x0), 0x0, new_csw.into())
+        .unwrap();
+
+    interface
+        .write_register(PortType::AccessPort(0x0), 0x4, 0xE000EDF4)
+        .unwrap();
+
+    interface
+        .write_register(PortType::AccessPort(0x0), 0xc, 0x1000b)
+        .unwrap();
+```
+
+You can cross check it with either a read or attach another debugger that
+doesn't reset the state and see the change you made.
+
+This method of interacting with the debugger is probably not a good idea
+to use for anything other than toy code given other abstrations like
+probe-rs exist. It's still very useful for learning what exactly is
+happening behind the scenes. Most of the code I gave should be common
+across multiple Cortex-M devices but always double check the manual
+for your particular board/processor.
+
+Happy haunting of your spooky devices!
