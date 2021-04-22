@@ -71,19 +71,23 @@ driver would actually use the in tree driver. Many embedded platforms have a
 long history of using out of tree drivers despite having ones available
 upstream.
 
-The attack the researchers chose was to submit a lot of small patches that
-were correct to build up trust. The goal was to use the trust they built up to
-be able to sneak something malicious in. This is something that could happen
-but you'd have to be very good at what you are doing to not raise suspicion.
+[edit 4/22: Brad Spengler pointed out that the malicious patches were
+submitted with random g-mail addresses, not a known trusted e-mail address.
+This is my mistake. I reworked the following paragraph with that in mind.]
+The researchers themselves had submitted a number of patches to the kernel
+under their own names but submitted the malicious patches under random
+g-mail addresses. This is a pretty poor attack vector since, again, to do
+something effective you would probably need multiple small patches.
+You'd have to be very good at what you are doing to not raise suspicion.
 The minute someone starts pushing a _little_ too much to take a patch or
 make a change people are going to start asking question. Trust is easily
-broken and hard to build up. This is also why I think it's good to revert
-all the patches submitted by the researchers, even if they look to be correct.
-This is what happens when major bugs are found in the kernel. Patches are
-reverted and then heavily scrutinized before anything is let back in. It would
-have been helpful to have a clear list of all patches submitted with a note 
-of which ones were actually bad (at this point everyone seems to be playing
-guess the bad patch).
+broken and hard to build up. This is why all the patches from the researchers
+are considered tainted at this point even if they claim they were submitted
+in good faith. This is what happens when major bugs are found in the kernel.
+Patches are reverted and then heavily scrutinized before anything is let back
+in. It would have been helpful to have a clear list of all patches submitted
+with a note of which ones were actually bad (at this point everyone seems to be
+playing guess the bad patch).
 
 The researchers attempted to [clarify](https://www-users.cs.umn.edu/~kjlu/papers/clarifications-hc.pdf)
 some of their work. The way this is written really gives me pause if the
