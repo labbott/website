@@ -4,6 +4,9 @@ date: 2021/04/21 11:00:00
 title: Untrustworthy research methods
 category: fedora
 ---
+[edit 4/25: The UMN has issued a [statement](https://lore.kernel.org/lkml/CAK8KejpUVLxmqp026JY7x5GzHU2YJLPU8SzTZUNXU2OXC70ZQQ@mail.gmail.com/)
+]
+
 [edit 4/22: Initial [review](https://lore.kernel.org/lkml/202104221451.292A6ED4@keescook/)
 has found good faith patches from UMN.]
 
