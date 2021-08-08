@@ -1,0 +1,21 @@
+---
+layout: post
+date: 2021/08/08 11:00:00
+title: Fun with the LPC55S69
+category: fedora
+---
+I never posted about it but at the end of April I disclosed a bug in an
+NXP chip as part of my work at [Oxide](https://oxide.computer/blog/lpc55). The
+short summary is there was an undisclosed hardware block in the LPC55S69 which
+allowed for modification of the ROM and breaking of various isolation
+boundries. Oops?
+
+My colleage Rick Altherr and I submitted and gave a [virtual presentation](https://www.youtube.com/watch?v=eKKgaGbcq4)
+at DEFCON about this as well. The [PoC](https://github.com/oxidecomputer/lpc55s69_rompatch_sample)
+should also be available now as well. A beverage of your choice if you can
+tell me anything else interesting that the ROM patcher does! (There were a
+few other bits set in the control register I never dug into)
+
+I have a lot more thoughts about this but I haven't found/made the brain space
+to write them all down. I did at least want to get the links up here for
+posterity.
